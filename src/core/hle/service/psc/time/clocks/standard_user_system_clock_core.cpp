@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Copyright 2023 sudachi Emulator Project
+// SPDX-FileCopyrightText: Copyright 2023 yuzu Emulator Project
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include "core/core.h"
@@ -11,8 +11,8 @@ StandardUserSystemClockCore::StandardUserSystemClockCore(
     StandardNetworkSystemClockCore& network_clock)
     : SystemClockCore{local_clock.GetSteadyClock()}, m_system{system},
       m_ctx{m_system, "Psc:StandardUserSystemClockCore"}, m_local_system_clock{local_clock},
-      m_network_system_clock{network_clock}, m_event{m_ctx.CreateEvent(
-                                                 "Psc:StandardUserSystemClockCore:Event")} {}
+      m_network_system_clock{network_clock},
+      m_event{m_ctx.CreateEvent("Psc:StandardUserSystemClockCore:Event")} {}
 
 StandardUserSystemClockCore::~StandardUserSystemClockCore() {
     m_ctx.CloseEvent(m_event);

@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Copyright 2023 sudachi Emulator Project
+// SPDX-FileCopyrightText: Copyright 2023 yuzu Emulator Project
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include "core/core.h"
@@ -133,6 +133,14 @@ Result GetInfo(Core::System& system, u64* result, InfoType info_id_type, Handle 
                 *result = 0;
             }
             R_SUCCEED();
+        case InfoType::ReservedRegionExtraSize:
+            /*
+            TODO: (jarrodnorwell)
+            https://switchbrew.org/wiki/18.0.0
+            > New InfoType (0x1C) "InfoType_ReservedRegionExtraSize" retrieves the extra size, which
+            is a member of KPageTableBase
+            */
+            R_SUCCEED();
 
         default:
             break;
@@ -249,6 +257,14 @@ Result GetInfo(Core::System& system, u64* result, InfoType info_id_type, Handle 
         // We succeeded.
         R_SUCCEED();
     }
+    case InfoType::ReservedRegionExtraSize:
+        /*
+        TODO: (jarrodnorwell)
+        https://switchbrew.org/wiki/18.0.0
+        > New InfoType (0x1C) "InfoType_ReservedRegionExtraSize" retrieves the extra size, which is
+        a member of KPageTableBase
+        */
+        R_SUCCEED();
     default:
         LOG_ERROR(Kernel_SVC, "Unimplemented svcGetInfo id=0x{:016X}", info_id);
         R_THROW(ResultInvalidEnumValue);

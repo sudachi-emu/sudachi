@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Copyright 2023 sudachi Emulator Project
+// SPDX-FileCopyrightText: Copyright 2023 yuzu Emulator Project
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #pragma once
@@ -29,8 +29,8 @@ public:
           m_standard_user_system_clock{m_system, m_standard_local_system_clock,
                                        m_standard_network_system_clock},
           m_ephemeral_network_clock{m_tick_based_steady_clock}, m_shared_memory{m_system},
-          m_power_state_request_manager{m_system}, m_alarms{m_system, m_standard_steady_clock,
-                                                            m_power_state_request_manager},
+          m_power_state_request_manager{m_system},
+          m_alarms{m_system, m_standard_steady_clock, m_power_state_request_manager},
           m_local_system_clock_context_writer{m_system, m_shared_memory},
           m_network_system_clock_context_writer{m_system, m_shared_memory,
                                                 m_standard_user_system_clock},

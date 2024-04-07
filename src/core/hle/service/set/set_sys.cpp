@@ -26,7 +26,7 @@ namespace Service::Set {
 
 namespace {
 constexpr u32 SETTINGS_VERSION{1u};
-constexpr auto SETTINGS_MAGIC = Common::MakeMagic('y', 'u', 'z', 'u', '_', 's', 'e', 't');
+constexpr auto SETTINGS_MAGIC = Common::MakeMagic('s', 'u', 'd', 'a', '_', 's', 'e', 't');
 struct SettingsHeader {
     u64 magic;
     u32 version;

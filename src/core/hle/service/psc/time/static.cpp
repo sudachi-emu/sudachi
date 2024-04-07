@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Copyright 2023 sudachi Emulator Project
+// SPDX-FileCopyrightText: Copyright 2023 yuzu Emulator Project
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include "common/scope_exit.h"
@@ -37,8 +37,8 @@ StaticService::StaticService(Core::System& system_, StaticServiceSetupInfo setup
       m_user_system_clock{m_time->m_standard_user_system_clock},
       m_network_system_clock{m_time->m_standard_network_system_clock},
       m_time_zone{m_time->m_time_zone},
-      m_ephemeral_network_clock{m_time->m_ephemeral_network_clock}, m_shared_memory{
-                                                                        m_time->m_shared_memory} {
+      m_ephemeral_network_clock{m_time->m_ephemeral_network_clock},
+      m_shared_memory{m_time->m_shared_memory} {
     // clang-format off
         static const FunctionInfo functions[] = {
             {0,   D<&StaticService::GetStandardUserSystemClock>, "GetStandardUserSystemClock"},

@@ -1494,7 +1494,7 @@ void NfcDevice::BuildAmiiboWithoutKeys(NFP::NTAG215File& stubbed_tag_data,
     settings.write_date = GetAmiiboDate(GetCurrentPosixTime());
 
     // Register info
-    SetAmiiboName(settings, {'y', 'u', 'z', 'u', 'A', 'm', 'i', 'i', 'b', 'o'});
+    SetAmiiboName(settings, {'s', 'u', 'd', 'a', 'A', 'm', 'i', 'i', 'b', 'o'});
     settings.settings.font_region.Assign(0);
     settings.init_date = GetAmiiboDate(GetCurrentPosixTime());
     store_data.BuildBase(Mii::Gender::Male);

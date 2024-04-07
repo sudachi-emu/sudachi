@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Copyright 2023 sudachi Emulator Project
+// SPDX-FileCopyrightText: Copyright 2023 yuzu Emulator Project
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include "common/microprofile.h"
@@ -100,8 +100,8 @@ PresentManager::PresentManager(const vk::Instance& instance_,
                                Swapchain& swapchain_, vk::SurfaceKHR& surface_)
     : instance{instance_}, render_window{render_window_}, device{device_},
       memory_allocator{memory_allocator_}, scheduler{scheduler_}, swapchain{swapchain_},
-      surface{surface_}, blit_supported{CanBlitToSwapchain(device.GetPhysical(),
-                                                           swapchain.GetImageViewFormat())},
+      surface{surface_},
+      blit_supported{CanBlitToSwapchain(device.GetPhysical(), swapchain.GetImageViewFormat())},
       use_present_thread{Settings::values.async_presentation.GetValue()} {
     SetImageCount();
 

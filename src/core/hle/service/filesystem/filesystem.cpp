@@ -410,6 +410,7 @@ u64 FileSystemController::GetFreeSpaceSize(FileSys::StorageId id) const {
     switch (id) {
     case FileSys::StorageId::None:
     case FileSys::StorageId::GameCard:
+    case FileSys::StorageId::Any:
         return 0;
     case FileSys::StorageId::SdCard:
         if (sdmc_factory == nullptr)
@@ -436,6 +437,7 @@ u64 FileSystemController::GetTotalSpaceSize(FileSys::StorageId id) const {
     switch (id) {
     case FileSys::StorageId::None:
     case FileSys::StorageId::GameCard:
+    case FileSys::StorageId::Any:
         return 0;
     case FileSys::StorageId::SdCard:
         if (sdmc_factory == nullptr)
@@ -536,6 +538,7 @@ FileSys::RegisteredCache* FileSystemController::GetRegisteredCacheForStorage(
     switch (id) {
     case FileSys::StorageId::None:
     case FileSys::StorageId::Host:
+    case FileSys::StorageId::Any:
         UNIMPLEMENTED();
         return nullptr;
     case FileSys::StorageId::GameCard:
@@ -556,6 +559,7 @@ FileSys::PlaceholderCache* FileSystemController::GetPlaceholderCacheForStorage(
     switch (id) {
     case FileSys::StorageId::None:
     case FileSys::StorageId::Host:
+    case FileSys::StorageId::Any:
         UNIMPLEMENTED();
         return nullptr;
     case FileSys::StorageId::GameCard:

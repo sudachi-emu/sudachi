@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Copyright 2023 sudachi Emulator Project
+// SPDX-FileCopyrightText: Copyright 2023 yuzu Emulator Project
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include <map>
@@ -252,17 +252,18 @@ void AndroidKeyboard::SubmitNormalText(const ResultData& data) const {
 }
 
 void InitJNI(JNIEnv* env) {
-    s_software_keyboard_class = reinterpret_cast<jclass>(
-        env->NewGlobalRef(env->FindClass("org/sudachi/sudachi_emu/applets/keyboard/SoftwareKeyboard")));
-    s_keyboard_config_class = reinterpret_cast<jclass>(env->NewGlobalRef(
-        env->FindClass("org/sudachi/sudachi_emu/applets/keyboard/SoftwareKeyboard$KeyboardConfig")));
+    s_software_keyboard_class = reinterpret_cast<jclass>(env->NewGlobalRef(
+        env->FindClass("org/sudachi/sudachi_emu/applets/keyboard/SoftwareKeyboard")));
+    s_keyboard_config_class = reinterpret_cast<jclass>(env->NewGlobalRef(env->FindClass(
+        "org/sudachi/sudachi_emu/applets/keyboard/SoftwareKeyboard$KeyboardConfig")));
     s_keyboard_data_class = reinterpret_cast<jclass>(env->NewGlobalRef(
         env->FindClass("org/sudachi/sudachi_emu/applets/keyboard/SoftwareKeyboard$KeyboardData")));
 
-    s_swkbd_execute_normal = env->GetStaticMethodID(
-        s_software_keyboard_class, "executeNormal",
-        "(Lorg/sudachi/sudachi_emu/applets/keyboard/SoftwareKeyboard$KeyboardConfig;)Lorg/sudachi/sudachi_emu/"
-        "applets/keyboard/SoftwareKeyboard$KeyboardData;");
+    s_swkbd_execute_normal =
+        env->GetStaticMethodID(s_software_keyboard_class, "executeNormal",
+                               "(Lorg/sudachi/sudachi_emu/applets/keyboard/"
+                               "SoftwareKeyboard$KeyboardConfig;)Lorg/sudachi/sudachi_emu/"
+                               "applets/keyboard/SoftwareKeyboard$KeyboardData;");
     s_swkbd_execute_inline = env->GetStaticMethodID(
         s_software_keyboard_class, "executeInline",
         "(Lorg/sudachi/sudachi_emu/applets/keyboard/SoftwareKeyboard$KeyboardConfig;)V");

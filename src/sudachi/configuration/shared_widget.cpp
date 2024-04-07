@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Copyright 2023 sudachi Emulator Project
+// SPDX-FileCopyrightText: Copyright 2023 yuzu Emulator Project
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include "sudachi/configuration/shared_widget.h"
@@ -766,8 +766,8 @@ Widget::Widget(Settings::BasicSetting* setting_, const TranslationMap& translati
 
 Builder::Builder(QWidget* parent_, bool runtime_lock_)
     : translations{InitializeTranslations(parent_)},
-      combobox_translations{ComboboxEnumeration(parent_)}, parent{parent_}, runtime_lock{
-                                                                                runtime_lock_} {}
+      combobox_translations{ComboboxEnumeration(parent_)}, parent{parent_},
+      runtime_lock{runtime_lock_} {}
 
 Builder::~Builder() = default;
 
