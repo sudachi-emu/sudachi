@@ -149,14 +149,7 @@ constexpr std::array master_key_hashes{
 
 static constexpr u8 CalculateMaxKeyblobSourceHash() {
     const auto is_zero = [](const auto& data) {
-        // TODO: Replace with std::all_of whenever mingw decides to update their
-        //       libraries to include the constexpr variant of it.
-        for (const auto element : data) {
-            if (element != 0) {
-                return false;
-            }
-        }
-        return true;
+        return std::all_of(data.begin(), data.end(), [](const auto v) { return v == 0; });
     };
 
     for (s8 i = 0x1F; i >= 0; --i) {

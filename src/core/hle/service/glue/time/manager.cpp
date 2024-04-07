@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Copyright 2023 sudachi Emulator Project
+// SPDX-FileCopyrightText: Copyright 2023 yuzu Emulator Project
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include <chrono>
@@ -87,10 +87,8 @@ static Service::PSC::Time::LocationName GetTimeZoneString(
 }
 
 TimeManager::TimeManager(Core::System& system)
-    : m_steady_clock_resource{system}, m_time_zone_binary{system}, m_worker{
-                                                                       system,
-                                                                       m_steady_clock_resource,
-                                                                       m_file_timestamp_worker} {
+    : m_steady_clock_resource{system}, m_time_zone_binary{system},
+      m_worker{system, m_steady_clock_resource, m_file_timestamp_worker} {
     m_time_m =
         system.ServiceManager().GetService<Service::PSC::Time::ServiceManager>("time:m", true);
 

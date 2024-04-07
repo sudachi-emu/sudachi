@@ -96,7 +96,7 @@ public:
             {23, nullptr, "GetOption"},
             {24, nullptr, "GetVerifyCertErrors"},
             {25, nullptr, "GetCipherInfo"},
-            {26, nullptr, "SetNextAlpnProto"},
+            {26, &ISslConnection::SetNextAlpnProto, "SetNextAlpnProto"},
             {27, nullptr, "GetNextAlpnProto"},
             {28, nullptr, "SetDtlsSocketDescriptor"},
             {29, nullptr, "GetDtlsHandshakeTimeout"},
@@ -385,6 +385,13 @@ private:
             LOG_WARNING(Service_SSL, "Unknown option={}, value={}", parameters.option,
                         parameters.value);
         }
+
+        IPC::ResponseBuilder rb{ctx, 2};
+        rb.Push(ResultSuccess);
+    }
+
+    void SetNextAlpnProto(HLERequestContext& ctx) {
+        LOG_WARNING(Service_SSL, "(STUBBED) called");
 
         IPC::ResponseBuilder rb{ctx, 2};
         rb.Push(ResultSuccess);

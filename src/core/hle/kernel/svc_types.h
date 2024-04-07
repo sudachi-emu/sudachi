@@ -153,6 +153,7 @@ enum class InfoType : u32 {
     ThreadTickCount = 25,
     IsSvcPermitted = 26,
     IoRegionHint = 27,
+    ReservedRegionExtraSize = 28,
 
     MesosphereMeta = 65000,
     MesosphereCurrentProcess = 65001,

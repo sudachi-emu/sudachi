@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Copyright 2023 sudachi Emulator Project
+// SPDX-FileCopyrightText: Copyright 2023 yuzu Emulator Project
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include <cstddef>
@@ -1161,10 +1161,9 @@ struct QueryCacheRuntimeImpl {
                           StagingBufferPool& staging_pool_,
                           ComputePassDescriptorQueue& compute_pass_descriptor_queue,
                           DescriptorPool& descriptor_pool)
-        : rasterizer{rasterizer_}, device_memory{device_memory_},
-          buffer_cache{buffer_cache_}, device{device_},
-          memory_allocator{memory_allocator_}, scheduler{scheduler_}, staging_pool{staging_pool_},
-          guest_streamer(0, runtime),
+        : rasterizer{rasterizer_}, device_memory{device_memory_}, buffer_cache{buffer_cache_},
+          device{device_}, memory_allocator{memory_allocator_}, scheduler{scheduler_},
+          staging_pool{staging_pool_}, guest_streamer(0, runtime),
           sample_streamer(static_cast<size_t>(QueryType::ZPassPixelCount64), runtime, rasterizer,
                           device, scheduler, memory_allocator, compute_pass_descriptor_queue,
                           descriptor_pool),

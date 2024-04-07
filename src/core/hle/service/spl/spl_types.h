@@ -68,6 +68,7 @@ enum class ModularExponentiateWithStorageKeyMode {
 enum class EsCommonKeyType {
     TitleKey = 0,
     ArchiveKey = 1,
+    UnknownKey = 2, // TODO: (jarrodnorwell)
 };
 
 struct AsyncOperationKey {

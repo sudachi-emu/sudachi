@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Copyright 2023 sudachi Emulator Project
+// SPDX-FileCopyrightText: Copyright 2023 yuzu Emulator Project
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #pragma once
@@ -115,8 +115,8 @@ struct QueryCacheBase<Traits>::QueryCacheBaseImpl {
     QueryCacheBaseImpl(QueryCacheBase<Traits>* owner_, VideoCore::RasterizerInterface& rasterizer_,
                        Tegra::MaxwellDeviceMemoryManager& device_memory_, RuntimeType& runtime_,
                        Tegra::GPU& gpu_)
-        : owner{owner_}, rasterizer{rasterizer_},
-          device_memory{device_memory_}, runtime{runtime_}, gpu{gpu_} {
+        : owner{owner_}, rasterizer{rasterizer_}, device_memory{device_memory_}, runtime{runtime_},
+          gpu{gpu_} {
         streamer_mask = 0;
         for (size_t i = 0; i < static_cast<size_t>(QueryType::MaxQueryTypes); i++) {
             streamers[i] = runtime.GetStreamerInterface(static_cast<QueryType>(i));

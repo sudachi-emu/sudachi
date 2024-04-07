@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Copyright 2023 sudachi Emulator Project
+// SPDX-FileCopyrightText: Copyright 2023 yuzu Emulator Project
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include "common/scope_exit.h"
@@ -12,8 +12,8 @@ SteadyClock::SteadyClock(Core::System& system_, std::shared_ptr<TimeManager> man
                          bool can_write_steady_clock, bool can_write_uninitialized_clock)
     : ServiceFramework{system_, "ISteadyClock"}, m_system{system},
       m_clock_core{manager->m_standard_steady_clock},
-      m_can_write_steady_clock{can_write_steady_clock}, m_can_write_uninitialized_clock{
-                                                            can_write_uninitialized_clock} {
+      m_can_write_steady_clock{can_write_steady_clock},
+      m_can_write_uninitialized_clock{can_write_uninitialized_clock} {
     // clang-format off
          static const FunctionInfo functions[] = {
         {0, D<&SteadyClock::GetCurrentTimePoint>, "GetCurrentTimePoint"},
