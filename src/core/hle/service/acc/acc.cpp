@@ -323,9 +323,9 @@ public:
             {1, &IProfileCommon::GetBase, "GetBase"},
             {10, &IProfileCommon::GetImageSize, "GetImageSize"},
             {11, &IProfileCommon::LoadImage, "LoadImage"},
-            {20, nullptr, "GetLargeImageSize"}, // 18.0.0+
-            {21, nullptr, "LoadLargeImage"},    // 18.0.0+
-            {30, nullptr, "GetImageId"}         // 18.0.0+
+            {20, nullptr, "GetLargeImageSize"},             // 18.0.0+
+            {21, nullptr, "LoadLargeImage"},                // 18.0.0+
+            {30, &IProfileCommon::GetImageId, "GetImageId"} // 18.0.0+
         };
 
         RegisterHandlers(functions);
@@ -491,6 +491,13 @@ protected:
             rb.Push(Account::ResultAccountUpdateFailed);
             return;
         }
+
+        IPC::ResponseBuilder rb{ctx, 2};
+        rb.Push(ResultSuccess);
+    }
+
+    void GetImageId(HLERequestContext& ctx) {
+        LOG_WARNING(Service_ACC, "(STUBBED) called");
 
         IPC::ResponseBuilder rb{ctx, 2};
         rb.Push(ResultSuccess);

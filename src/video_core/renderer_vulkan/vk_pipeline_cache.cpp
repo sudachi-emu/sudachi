@@ -54,7 +54,7 @@ using VideoCommon::GenericEnvironment;
 using VideoCommon::GraphicsEnvironment;
 
 constexpr u32 CACHE_VERSION = 11;
-constexpr std::array<char, 8> VULKAN_CACHE_MAGIC_NUMBER{'y', 'u', 'z', 'u', 'v', 'k', 'c', 'h'};
+constexpr std::array<char, 8> VULKAN_CACHE_MAGIC_NUMBER{'s', 'u', 'd', 'a', 'v', 'k', 'c', 'h'};
 
 template <typename Container>
 auto MakeSpan(Container& container) {

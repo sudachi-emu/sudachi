@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Copyright 2023 sudachi Emulator Project
+// SPDX-FileCopyrightText: Copyright 2023 yuzu Emulator Project
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include "core/core.h"
@@ -30,8 +30,8 @@ Alarm::~Alarm() {
 Alarms::Alarms(Core::System& system, StandardSteadyClockCore& steady_clock,
                PowerStateRequestManager& power_state_request_manager)
     : m_system{system}, m_ctx{system, "Psc:Alarms"}, m_steady_clock{steady_clock},
-      m_power_state_request_manager{power_state_request_manager}, m_event{m_ctx.CreateEvent(
-                                                                      "Psc:Alarms:Event")} {}
+      m_power_state_request_manager{power_state_request_manager},
+      m_event{m_ctx.CreateEvent("Psc:Alarms:Event")} {}
 
 Alarms::~Alarms() {
     m_ctx.CloseEvent(m_event);

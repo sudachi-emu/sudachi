@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Copyright 2023 sudachi Emulator Project
+// SPDX-FileCopyrightText: Copyright 2023 yuzu Emulator Project
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include <chrono>
@@ -22,9 +22,9 @@ TimeZoneService::TimeZoneService(
     std::shared_ptr<Service::PSC::Time::TimeZoneService> time_zone_service)
     : ServiceFramework{system_, "ITimeZoneService"}, m_system{system},
       m_can_write_timezone_device_location{can_write_timezone_device_location},
-      m_file_timestamp_worker{file_timestamp_worker}, m_wrapped_service{std::move(
-                                                          time_zone_service)},
-      m_operation_event{m_system}, m_time_zone_binary{time_zone_binary} {
+      m_file_timestamp_worker{file_timestamp_worker},
+      m_wrapped_service{std::move(time_zone_service)}, m_operation_event{m_system},
+      m_time_zone_binary{time_zone_binary} {
     // clang-format off
     static const FunctionInfo functions[] = {
         {0,   D<&TimeZoneService::GetDeviceLocationName>, "GetDeviceLocationName"},

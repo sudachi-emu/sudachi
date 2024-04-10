@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: Copyright 2023 sudachi Emulator Project
+// SPDX-FileCopyrightText: Copyright 2023 yuzu Emulator Project
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include "core/core.h"
@@ -6,8 +6,8 @@
 
 namespace Service::PSC::Time {
 OperationEvent::OperationEvent(Core::System& system)
-    : m_ctx{system, "Time:OperationEvent"}, m_event{
-                                                m_ctx.CreateEvent("Time:OperationEvent:Event")} {}
+    : m_ctx{system, "Time:OperationEvent"},
+      m_event{m_ctx.CreateEvent("Time:OperationEvent:Event")} {}
 
 OperationEvent::~OperationEvent() {
     m_ctx.CloseEvent(m_event);
