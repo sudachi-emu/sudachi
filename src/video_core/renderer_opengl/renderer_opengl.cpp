@@ -10,7 +10,6 @@
 
 #include "common/assert.h"
 #include "common/logging/log.h"
-#include "common/microprofile.h"
 #include "common/settings.h"
 #include "common/telemetry.h"
 #include "core/core_timing.h"

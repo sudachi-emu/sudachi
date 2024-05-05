@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include "common/cityhash.h"
-#include "common/microprofile.h"
 #include "common/settings.h"
 #include "core/core.h"
 #include "video_core/dma_pusher.h"
