@@ -89,9 +89,6 @@ add_library(common STATIC
     math_util.h
     memory_detect.cpp
     memory_detect.h
-    microprofile.cpp
-    microprofile.h
-    microprofileui.h
     multi_level_page_table.cpp
     multi_level_page_table.h
     nvidia_flags.cpp
@@ -159,6 +156,7 @@ add_library(common STATIC
     wall_clock.h
     zstd_compression.cpp
     zstd_compression.h
+    profiling.h
 )
 
 if (SUDACHI_ENABLE_PORTABLE)
@@ -254,8 +252,13 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   )
 endif()
 
-target_link_libraries(common PUBLIC Boost::context Boost::headers fmt::fmt microprofile stb::headers Threads::Threads)
+target_link_libraries(common PUBLIC Boost::context Boost::headers fmt::fmt stb::headers Threads::Threads)
 target_link_libraries(common PRIVATE lz4::lz4 zstd::zstd LLVM::Demangle)
+
+if (ENABLE_PROFILING)
+    target_link_libraries(common PUBLIC tracy)
+    target_compile_definitions(common PUBLIC -DENABLE_PROFILING)
+endif()
 
 if (ANDROID)
     # For ASharedMemory_create

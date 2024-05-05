@@ -3,7 +3,7 @@
 
 #include <locale>
 #include "common/hex_util.h"
-#include "common/microprofile.h"
+#include "common/profiling.h"
 #include "common/swap.h"
 #include "core/arm/debug.h"
 #include "core/core.h"
@@ -269,8 +269,6 @@ void CheatEngine::Reload(std::vector<CheatEntry> reload_cheats) {
     is_pending_reload.exchange(true);
 }
 
-MICROPROFILE_DEFINE(Cheat_Engine, "Add-Ons", "Cheat Engine", MP_RGB(70, 200, 70));
-
 void CheatEngine::FrameCallback(std::chrono::nanoseconds ns_late) {
     if (is_pending_reload.exchange(false)) {
         vm.LoadProgram(cheats);
@@ -280,7 +278,7 @@ void CheatEngine::FrameCallback(std::chrono::nanoseconds ns_late) {
         return;
     }
 
-    MICROPROFILE_SCOPE(Cheat_Engine);
+    SUDACHI_PROFILE("Cheat", "Engine");
 
     vm.Execute(metadata);
 }

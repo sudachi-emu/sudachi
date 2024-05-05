@@ -38,7 +38,6 @@
 #include <QOpenGLContext>
 #endif
 
-#include "common/microprofile.h"
 #include "common/polyfill_thread.h"
 #include "common/scm_rev.h"
 #include "common/settings.h"
@@ -73,7 +72,6 @@ EmuThread::~EmuThread() = default;
 
 void EmuThread::run() {
     const char* name = "EmuControlThread";
-    MicroProfileOnThreadCreate(name);
     Common::SetCurrentThreadName(name);
 
     auto& gpu = m_system.GPU();
@@ -124,10 +122,6 @@ void EmuThread::run() {
     // Shutdown the main emulated process
     m_system.DetachDebugger();
     m_system.ShutdownMainProcess();
-
-#if MICROPROFILE_ENABLED
-    MicroProfileOnThreadExit();
-#endif
 }
 
 // Unlock while emitting signals so that the main thread can

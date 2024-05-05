@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include "common/assert.h"
-#include "common/microprofile.h"
 #include "common/scope_exit.h"
 #include "common/settings.h"
 #include "common/thread.h"
@@ -22,10 +21,6 @@ static void RunThread(std::stop_token stop_token, Core::System& system,
                       VideoCore::RendererBase& renderer, Core::Frontend::GraphicsContext& context,
                       Tegra::Control::Scheduler& scheduler, SynchState& state) {
     std::string name = "GPU";
-    MicroProfileOnThreadCreate(name.c_str());
-    SCOPE_EXIT {
-        MicroProfileOnThreadExit();
-    };
 
     Common::SetCurrentThreadName(name.c_str());
     Common::SetCurrentThreadPriority(Common::ThreadPriority::Critical);

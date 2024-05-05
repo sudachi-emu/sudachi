@@ -12,7 +12,6 @@
 
 #include "common/assert.h"
 #include "common/logging/log.h"
-#include "common/microprofile.h"
 #include "common/scope_exit.h"
 #include "common/thread.h"
 #include "common/thread_worker.h"
@@ -45,8 +44,6 @@
 #include "core/hle/service/server_manager.h"
 #include "core/hle/service/sm/sm.h"
 #include "core/memory.h"
-
-MICROPROFILE_DEFINE(Kernel_SVC, "Kernel", "SVC", MP_RGB(70, 200, 70));
 
 namespace Kernel {
 
@@ -1276,14 +1273,6 @@ bool KernelCore::IsShuttingDown() const {
 void KernelCore::ExceptionalExitApplication() {
     exception_exited = true;
     SuspendEmulation(true);
-}
-
-void KernelCore::EnterSVCProfile() {
-    impl->svc_ticks[CurrentPhysicalCoreIndex()] = MicroProfileEnter(MICROPROFILE_TOKEN(Kernel_SVC));
-}
-
-void KernelCore::ExitSVCProfile() {
-    MicroProfileLeave(MICROPROFILE_TOKEN(Kernel_SVC), impl->svc_ticks[CurrentPhysicalCoreIndex()]);
 }
 
 Init::KSlabResourceCounts& KernelCore::SlabResourceCounts() {

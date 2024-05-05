@@ -8,6 +8,10 @@ include_directories(.)
 set_property(DIRECTORY APPEND PROPERTY
     COMPILE_DEFINITIONS $<$<CONFIG:Debug>:_DEBUG> $<$<NOT:$<CONFIG:Debug>>:NDEBUG>)
 
+if (ENABLE_PROFILING)
+    add_definitions(-DTRACY_ENABLE -DTRACY_ON_DEMAND)
+endif()
+
 # Set compilation flags
 if (MSVC)
     set(CMAKE_CONFIGURATION_TYPES Debug Release CACHE STRING "" FORCE)

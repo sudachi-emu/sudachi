@@ -6,13 +6,10 @@
 #include "audio_core/adsp/adsp.h"
 #include "audio_core/audio_core.h"
 #include "audio_core/renderer/system_manager.h"
-#include "common/microprofile.h"
+#include "common/profiling.h"
 #include "common/thread.h"
 #include "core/core.h"
 #include "core/core_timing.h"
-
-MICROPROFILE_DEFINE(Audio_RenderSystemManager, "Audio", "Render System Manager",
-                    MP_RGB(60, 19, 97));
 
 namespace AudioCore::Renderer {
 
@@ -80,14 +77,13 @@ bool SystemManager::Remove(System& system_) {
 
 void SystemManager::ThreadFunc(std::stop_token stop_token) {
     static constexpr char name[]{"AudioRenderSystemManager"};
-    MicroProfileOnThreadCreate(name);
     Common::SetCurrentThreadName(name);
     Common::SetCurrentThreadPriority(Common::ThreadPriority::High);
     while (active && !stop_token.stop_requested()) {
         {
             std::scoped_lock l{mutex1};
 
-            MICROPROFILE_SCOPE(Audio_RenderSystemManager);
+            SUDACHI_PROFILE("Audio", "Render System Manager");
 
             for (auto system : systems) {
                 system->SendCommandToDsp();

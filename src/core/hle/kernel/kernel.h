@@ -271,10 +271,6 @@ public:
 
     bool IsShuttingDown() const;
 
-    void EnterSVCProfile();
-
-    void ExitSVCProfile();
-
     /// Workaround for single-core mode when preempting threads while idle.
     bool IsPhantomModeForSingleCore() const;
     void SetIsPhantomModeForSingleCore(bool value);

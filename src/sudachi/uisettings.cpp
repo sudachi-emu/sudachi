@@ -66,7 +66,6 @@ void SaveWindowState() {
     config.setValue(QStringLiteral("state"), values.state);
     config.setValue(QStringLiteral("geometryRenderWindow"), values.renderwindow_geometry);
     config.setValue(QStringLiteral("gameListHeaderState"), values.gamelist_header_state);
-    config.setValue(QStringLiteral("microProfileDialogGeometry"), values.microprofile_geometry);
 
     config.sync();
 }
@@ -89,8 +88,6 @@ void RestoreWindowState(std::unique_ptr<QtConfig>& qtConfig) {
             config.value(QStringLiteral("geometryRenderWindow")).toByteArray();
         values.gamelist_header_state =
             config.value(QStringLiteral("gameListHeaderState")).toByteArray();
-        values.microprofile_geometry =
-            config.value(QStringLiteral("microProfileDialogGeometry")).toByteArray();
         config.endGroup();
         config.endGroup();
         return;
@@ -105,8 +102,6 @@ void RestoreWindowState(std::unique_ptr<QtConfig>& qtConfig) {
         config.value(QStringLiteral("geometryRenderWindow")).toByteArray();
     values.gamelist_header_state =
         config.value(QStringLiteral("gameListHeaderState")).toByteArray();
-    values.microprofile_geometry =
-        config.value(QStringLiteral("microProfileDialogGeometry")).toByteArray();
 }
 
 } // namespace UISettings

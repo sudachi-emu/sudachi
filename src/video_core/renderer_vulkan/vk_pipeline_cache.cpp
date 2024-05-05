@@ -12,7 +12,7 @@
 #include "common/cityhash.h"
 #include "common/fs/fs.h"
 #include "common/fs/path_util.h"
-#include "common/microprofile.h"
+#include "common/profiling.h"
 #include "common/thread_worker.h"
 #include "core/core.h"
 #include "shader_recompiler/backend/spirv/emit_spirv.h"
@@ -40,7 +40,6 @@
 #include "video_core/vulkan_common/vulkan_wrapper.h"
 
 namespace Vulkan {
-MICROPROFILE_DECLARE(Vulkan_PipelineCache);
 
 namespace {
 using Shader::Backend::SPIRV::EmitSPIRV;
@@ -419,7 +418,7 @@ PipelineCache::~PipelineCache() {
 }
 
 GraphicsPipeline* PipelineCache::CurrentGraphicsPipeline() {
-    MICROPROFILE_SCOPE(Vulkan_PipelineCache);
+    SUDACHI_PROFILE("Vulkan", "Pipeline Cache");
 
     if (!RefreshStages(graphics_key.unique_hashes)) {
         current_pipeline = nullptr;
@@ -438,7 +437,7 @@ GraphicsPipeline* PipelineCache::CurrentGraphicsPipeline() {
 }
 
 ComputePipeline* PipelineCache::CurrentComputePipeline() {
-    MICROPROFILE_SCOPE(Vulkan_PipelineCache);
+    SUDACHI_PROFILE("Vulkan", "Pipeline Cache");
 
     const ShaderInfo* const shader{ComputeShader()};
     if (!shader) {

@@ -14,7 +14,6 @@
 #include "common/x64/cpu_wait.h"
 #endif
 
-#include "common/microprofile.h"
 #include "core/core_timing.h"
 #include "core/hardware_properties.h"
 
@@ -52,12 +51,10 @@ CoreTiming::~CoreTiming() {
 
 void CoreTiming::ThreadEntry(CoreTiming& instance) {
     static constexpr char name[] = "HostTiming";
-    MicroProfileOnThreadCreate(name);
     Common::SetCurrentThreadName(name);
     Common::SetCurrentThreadPriority(Common::ThreadPriority::High);
     instance.on_thread_init();
     instance.ThreadLoop();
-    MicroProfileOnThreadExit();
 }
 
 void CoreTiming::Initialize(std::function<void()>&& on_thread_init_) {

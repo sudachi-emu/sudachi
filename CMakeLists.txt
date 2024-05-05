@@ -44,6 +44,8 @@ option(SUDACHI_USE_QT_WEB_ENGINE "Use QtWebEngine for web applet implementation"
 
 option(ENABLE_CUBEB "Enables the cubeb audio backend" ON)
 
+option(ENABLE_PROFILING "Enables integration with the Tracy profiler" ON)
+
 option(USE_DISCORD_PRESENCE "Enables Discord Rich Presence" OFF)
 
 option(SUDACHI_TESTS "Compile tests" "${BUILD_TESTING}")

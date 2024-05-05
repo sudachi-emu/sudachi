@@ -9,7 +9,6 @@
 #include <memory>
 
 #include "common/assert.h"
-#include "common/microprofile.h"
 #include "common/settings.h"
 #include "core/core.h"
 #include "core/core_timing.h"

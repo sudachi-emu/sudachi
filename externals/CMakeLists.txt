@@ -48,10 +48,6 @@ if (NOT MSVC)
         -Wno-string-concatenation)
 endif()
 
-# MicroProfile
-add_library(microprofile INTERFACE)
-target_include_directories(microprofile INTERFACE ./microprofile)
-
 # GCC bugs
 if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "12" AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND MINGW)
     target_compile_options(microprofile INTERFACE "-Wno-array-bounds")
@@ -321,3 +317,10 @@ if (ARCHITECTURE_arm64 AND NOT TARGET sse2neon)
     target_include_directories(sse2neon INTERFACE sse2neon)
 endif()
 
+# Tracy
+if (ENABLE_PROFILING)
+    add_subdirectory(tracy)
+    if(WIN32)
+        target_link_libraries(tracy PRIVATE dbghelp)
+    endif()
+endif()

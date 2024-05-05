@@ -23,10 +23,8 @@ DmaPusher::DmaPusher(Core::System& system_, GPU& gpu_, MemoryManager& memory_man
 
 DmaPusher::~DmaPusher() = default;
 
-MICROPROFILE_DEFINE(DispatchCalls, "GPU", "Execute command buffer", MP_RGB(128, 128, 192));
-
 void DmaPusher::DispatchCalls() {
-    MICROPROFILE_SCOPE(DispatchCalls);
+    SUDACHI_PROFILE("Pusher", "Dispatch Calls");
 
     dma_pushbuffer_subindex = 0;
 

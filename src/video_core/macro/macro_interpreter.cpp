@@ -6,11 +6,9 @@
 
 #include "common/assert.h"
 #include "common/logging/log.h"
-#include "common/microprofile.h"
+#include "common/profiling.h"
 #include "video_core/engines/maxwell_3d.h"
 #include "video_core/macro/macro_interpreter.h"
-
-MICROPROFILE_DEFINE(MacroInterp, "GPU", "Execute macro interpreter", MP_RGB(128, 128, 192));
 
 namespace Tegra {
 namespace {
@@ -90,7 +88,7 @@ private:
 };
 
 void MacroInterpreterImpl::Execute(const std::vector<u32>& params, u32 method) {
-    MICROPROFILE_SCOPE(MacroInterp);
+    SUDACHI_PROFILE("Macro", "Interpeter");
     Reset();
 
     registers[1] = params[0];

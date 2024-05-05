@@ -10,7 +10,7 @@
 
 #include "common/assert.h"
 #include "common/logging/log.h"
-#include "common/microprofile.h"
+#include "common/profiling.h"
 #include "common/scope_exit.h"
 #include "common/settings.h"
 #include "video_core/buffer_cache/buffer_cache.h"
@@ -44,12 +44,6 @@ using Maxwell = Tegra::Engines::Maxwell3D::Regs;
 using MaxwellDrawState = Tegra::Engines::DrawManager::State;
 using VideoCommon::ImageViewId;
 using VideoCommon::ImageViewType;
-
-MICROPROFILE_DEFINE(Vulkan_WaitForWorker, "Vulkan", "Wait for worker", MP_RGB(255, 192, 192));
-MICROPROFILE_DEFINE(Vulkan_Drawing, "Vulkan", "Record drawing", MP_RGB(192, 128, 128));
-MICROPROFILE_DEFINE(Vulkan_Compute, "Vulkan", "Record compute", MP_RGB(192, 128, 128));
-MICROPROFILE_DEFINE(Vulkan_Clearing, "Vulkan", "Record clearing", MP_RGB(192, 128, 128));
-MICROPROFILE_DEFINE(Vulkan_PipelineCache, "Vulkan", "Pipeline cache", MP_RGB(192, 128, 128));
 
 namespace {
 struct DrawParams {
@@ -206,7 +200,7 @@ RasterizerVulkan::~RasterizerVulkan() = default;
 
 template <typename Func>
 void RasterizerVulkan::PrepareDraw(bool is_indexed, Func&& draw_func) {
-    MICROPROFILE_SCOPE(Vulkan_Drawing);
+    SUDACHI_PROFILE("Vulkan", "Drawing");
 
     SCOPE_EXIT {
         gpu.TickWork();
@@ -300,7 +294,7 @@ void RasterizerVulkan::DrawIndirect() {
 }
 
 void RasterizerVulkan::DrawTexture() {
-    MICROPROFILE_SCOPE(Vulkan_Drawing);
+    SUDACHI_PROFILE("Vulkan", "Drawing");
 
     SCOPE_EXIT {
         gpu.TickWork();
@@ -350,7 +344,7 @@ void RasterizerVulkan::DrawTexture() {
 }
 
 void RasterizerVulkan::Clear(u32 layer_count) {
-    MICROPROFILE_SCOPE(Vulkan_Clearing);
+    SUDACHI_PROFILE("Vulkan", "Clearing");
 
     FlushWork();
     gpu_memory->FlushCaching();
