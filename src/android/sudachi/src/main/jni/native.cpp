@@ -27,7 +27,6 @@
 #include "common/fs/path_util.h"
 #include "common/logging/backend.h"
 #include "common/logging/log.h"
-#include "common/microprofile.h"
 #include "common/scm_rev.h"
 #include "common/scope_exit.h"
 #include "common/settings.h"
@@ -406,11 +405,6 @@ u64 EmulationSession::GetProgramId(JNIEnv* env, jstring jprogramId) {
 static Core::SystemResultStatus RunEmulation(const std::string& filepath,
                                              const size_t program_index,
                                              const bool frontend_initiated) {
-    MicroProfileOnThreadCreate("EmuThread");
-    SCOPE_EXIT {
-        MicroProfileShutdown();
-    };
-
     LOG_INFO(Frontend, "starting");
 
     if (filepath.empty()) {
