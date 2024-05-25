@@ -11,7 +11,8 @@ SystemSettings DefaultSystemSettings() {
     settings.version = 0x140000;
     settings.flags = 7;
 
-    settings.rebootless_system_version = {.version = 38, .reserved = 1, .display_version = 38};
+    settings.rebootless_system_version =
+        RebootlessSystemUpdateVersion{.version = 38, .reserved = {1}, .display_version = {38}};
 
     settings.color_set_id = ColorSet::BasicWhite;
 

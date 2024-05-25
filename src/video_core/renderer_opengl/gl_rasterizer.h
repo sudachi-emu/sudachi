@@ -236,6 +236,8 @@ private:
     void QueryFallback(GPUVAddr gpu_addr, VideoCommon::QueryType type,
                        VideoCommon::QueryPropertiesFlags flags, u32 payload, u32 subreport);
 
+    bool IsAnyFloat(Tegra::Engines::Maxwell3D::Regs::VertexAttribute attribute);
+
     Tegra::GPU& gpu;
     Tegra::MaxwellDeviceMemoryManager& device_memory;
 

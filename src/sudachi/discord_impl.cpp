@@ -24,7 +24,7 @@ DiscordImpl::DiscordImpl(Core::System& system_) : system{system_} {
     DiscordEventHandlers handlers{};
     // The number is the client ID for sudachi, it's used for images and the
     // application name
-    Discord_Initialize("712465656758665259", &handlers, 1, nullptr);
+    Discord_Initialize("1223291656732934377", &handlers, 1, nullptr);
 }
 
 DiscordImpl::~DiscordImpl() {

@@ -1197,6 +1197,10 @@ void RasterizerOpenGL::SyncBlendState() {
     }
 }
 
+bool RasterizerOpenGL::IsAnyFloat(Tegra::Engines::Maxwell3D::Regs::VertexAttribute attribute) {
+    return attribute.type == Tegra::Engines::Maxwell3D::Regs::VertexAttribute::Type::Float;
+};
+
 void RasterizerOpenGL::SyncLogicOpState() {
     auto& flags = maxwell3d->dirty.flags;
     if (!flags[Dirty::LogicOp]) {
@@ -1205,7 +1209,16 @@ void RasterizerOpenGL::SyncLogicOpState() {
     flags[Dirty::LogicOp] = false;
 
     const auto& regs = maxwell3d->regs;
-    if (regs.logic_op.enable) {
+
+    bool has_float = false;
+
+    if (std::any_of(regs.vertex_attrib_format.begin(), regs.vertex_attrib_format.end(),
+                    [&](Tegra::Engines::Maxwell3D::Regs::VertexAttribute attribute) {
+                        return IsAnyFloat(attribute);
+                    }))
+        has_float = true;
+
+    if (regs.logic_op.enable && !has_float) {
         glEnable(GL_COLOR_LOGIC_OP);
         glLogicOp(MaxwellToGL::LogicOp(regs.logic_op.op));
     } else {

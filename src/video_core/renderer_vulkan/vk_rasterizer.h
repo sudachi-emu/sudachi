@@ -180,6 +180,8 @@ private:
 
     void UpdateVertexInput(Tegra::Engines::Maxwell3D::Regs& regs);
 
+    bool IsAnyFloat(Tegra::Engines::Maxwell3D::Regs::VertexAttribute attribute);
+
     Tegra::GPU& gpu;
     Tegra::MaxwellDeviceMemoryManager& device_memory;
 

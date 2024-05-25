@@ -1310,12 +1310,25 @@ void RasterizerVulkan::UpdateDepthBiasEnable(Tegra::Engines::Maxwell3D::Regs& re
         [enable](vk::CommandBuffer cmdbuf) { cmdbuf.SetDepthBiasEnableEXT(enable != 0); });
 }
 
+bool RasterizerVulkan::IsAnyFloat(Tegra::Engines::Maxwell3D::Regs::VertexAttribute attribute) {
+    return attribute.type == Tegra::Engines::Maxwell3D::Regs::VertexAttribute::Type::Float;
+};
+
 void RasterizerVulkan::UpdateLogicOpEnable(Tegra::Engines::Maxwell3D::Regs& regs) {
     if (!state_tracker.TouchLogicOpEnable()) {
         return;
     }
-    scheduler.Record([enable = regs.logic_op.enable](vk::CommandBuffer cmdbuf) {
-        cmdbuf.SetLogicOpEnableEXT(enable != 0);
+
+    scheduler.Record([&, regs](vk::CommandBuffer cmdbuf) {
+        bool has_float = false;
+
+        if (std::any_of(regs.vertex_attrib_format.begin(), regs.vertex_attrib_format.end(),
+                        [&](Tegra::Engines::Maxwell3D::Regs::VertexAttribute attribute) {
+                            return IsAnyFloat(attribute);
+                        }))
+            has_float = true;
+
+        cmdbuf.SetLogicOpEnableEXT((regs.logic_op.enable != 0 && !has_float) ? true : false);
     });
 }
 

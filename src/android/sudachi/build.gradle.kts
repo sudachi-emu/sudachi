@@ -186,7 +186,7 @@ android {
 }
 
 tasks.create<Delete>("ktlintReset") {
-    delete(File(buildDir.path + File.separator + "intermediates/ktLint"))
+    delete(File(layout.buildDirectory.toString() + File.separator + "intermediates/ktLint"))
 }
 
 val showFormatHelp = {
@@ -203,13 +203,6 @@ ktlint {
     version.set("0.47.1")
     android.set(true)
     ignoreFailures.set(false)
-    disabledRules.set(
-        setOf(
-            "no-wildcard-imports",
-            "package-name",
-            "import-ordering"
-        )
-    )
     reporters {
         reporter(ReporterType.CHECKSTYLE)
     }
