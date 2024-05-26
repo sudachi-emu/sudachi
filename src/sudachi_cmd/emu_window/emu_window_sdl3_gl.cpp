@@ -16,8 +16,8 @@
 #include "common/string_util.h"
 #include "core/core.h"
 #include "input_common/main.h"
+#include "sudachi_cmd/emu_window/emu_window_sdl3_gl.h"
 #include "video_core/renderer_base.h"
-#include "sudachi_cmd/emu_window/emu_window_sdl2_gl.h"
 
 class SDLGLContext : public Core::Frontend::GraphicsContext {
 public:
@@ -55,7 +55,7 @@ private:
     bool is_current = false;
 };
 
-bool EmuWindow_SDL2_GL::SupportsRequiredGLExtensions() {
+bool EmuWindow_SDL3_GL::SupportsRequiredGLExtensions() {
     std::vector<std::string_view> unsupported_ext;
 
     // Extensions required to support some texture formats.
@@ -73,9 +73,9 @@ bool EmuWindow_SDL2_GL::SupportsRequiredGLExtensions() {
     return unsupported_ext.empty();
 }
 
-EmuWindow_SDL2_GL::EmuWindow_SDL2_GL(InputCommon::InputSubsystem* input_subsystem_,
+EmuWindow_SDL3_GL::EmuWindow_SDL3_GL(InputCommon::InputSubsystem* input_subsystem_,
                                      Core::System& system_, bool fullscreen)
-    : EmuWindow_SDL2{input_subsystem_, system_} {
+    : EmuWindow_SDL3{input_subsystem_, system_} {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
@@ -93,14 +93,11 @@ EmuWindow_SDL2_GL::EmuWindow_SDL2_GL(InputCommon::InputSubsystem* input_subsyste
     std::string window_title = fmt::format("sudachi {} | {}-{}", Common::g_build_fullname,
                                            Common::g_scm_branch, Common::g_scm_desc);
     render_window =
-        SDL_CreateWindow(window_title.c_str(),
-                         SDL_WINDOWPOS_UNDEFINED, // x position
-                         SDL_WINDOWPOS_UNDEFINED, // y position
-                         Layout::ScreenUndocked::Width, Layout::ScreenUndocked::Height,
-                         SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
+        SDL_CreateWindow(window_title.c_str(), Layout::ScreenUndocked::Width,
+                         Layout::ScreenUndocked::Height, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
     if (render_window == nullptr) {
-        LOG_CRITICAL(Frontend, "Failed to create SDL2 window! {}", SDL_GetError());
+        LOG_CRITICAL(Frontend, "Failed to create SDL3 window! {}", SDL_GetError());
         exit(1);
     }
 
@@ -117,15 +114,15 @@ EmuWindow_SDL2_GL::EmuWindow_SDL2_GL(InputCommon::InputSubsystem* input_subsyste
     core_context = CreateSharedContext();
 
     if (window_context == nullptr) {
-        LOG_CRITICAL(Frontend, "Failed to create SDL2 GL context: {}", SDL_GetError());
+        LOG_CRITICAL(Frontend, "Failed to create SDL3 GL context: {}", SDL_GetError());
         exit(1);
     }
     if (core_context == nullptr) {
-        LOG_CRITICAL(Frontend, "Failed to create shared SDL2 GL context: {}", SDL_GetError());
+        LOG_CRITICAL(Frontend, "Failed to create shared SDL3 GL context: {}", SDL_GetError());
         exit(1);
     }
 
-    if (!gladLoadGLLoader(static_cast<GLADloadproc>(SDL_GL_GetProcAddress))) {
+    if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress)) {
         LOG_CRITICAL(Frontend, "Failed to initialize GL functions! {}", SDL_GetError());
         exit(1);
     }
@@ -138,16 +135,16 @@ EmuWindow_SDL2_GL::EmuWindow_SDL2_GL(InputCommon::InputSubsystem* input_subsyste
     OnResize();
     OnMinimalClientAreaChangeRequest(GetActiveConfig().min_client_area_size);
     SDL_PumpEvents();
-    LOG_INFO(Frontend, "sudachi Version: {} | {}-{}", Common::g_build_fullname, Common::g_scm_branch,
-             Common::g_scm_desc);
+    LOG_INFO(Frontend, "sudachi Version: {} | {}-{}", Common::g_build_fullname,
+             Common::g_scm_branch, Common::g_scm_desc);
     Settings::LogSettings();
 }
 
-EmuWindow_SDL2_GL::~EmuWindow_SDL2_GL() {
+EmuWindow_SDL3_GL::~EmuWindow_SDL3_GL() {
     core_context.reset();
     SDL_GL_DeleteContext(window_context);
 }
 
-std::unique_ptr<Core::Frontend::GraphicsContext> EmuWindow_SDL2_GL::CreateSharedContext() const {
+std::unique_ptr<Core::Frontend::GraphicsContext> EmuWindow_SDL3_GL::CreateSharedContext() const {
     return std::make_unique<SDLGLContext>(render_window);
 }

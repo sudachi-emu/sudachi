@@ -12,12 +12,12 @@ include(DownloadExternals)
 include(CMakeDependentOption)
 include(CTest)
 
-# Set bundled sdl2/qt as dependent options.
-# OFF by default, but if ENABLE_SDL2 and MSVC are true then ON
-option(ENABLE_SDL2 "Enable the SDL2 frontend" ON)
-CMAKE_DEPENDENT_OPTION(SUDACHI_USE_BUNDLED_SDL2 "Download bundled SDL2 binaries" ON "ENABLE_SDL2;MSVC" OFF)
-# On Linux system SDL2 is likely to be lacking HIDAPI support which have drawbacks but is needed for SDL motion
-CMAKE_DEPENDENT_OPTION(SUDACHI_USE_EXTERNAL_SDL2 "Compile external SDL2" ON "ENABLE_SDL2;NOT MSVC" OFF)
+# Set bundled sdl3/qt as dependent options.
+# OFF by default, but if ENABLE_SDL3 and MSVC are true then ON
+option(ENABLE_SDL3 "Enable the SDL3 frontend" ON)
+CMAKE_DEPENDENT_OPTION(SUDACHI_USE_BUNDLED_SDL3 "Download bundled SDL3 binaries" ON "ENABLE_SDL3;MSVC" OFF)
+# On Linux system SDL3 is likely to be lacking HIDAPI support which have drawbacks but is needed for SDL motion
+CMAKE_DEPENDENT_OPTION(SUDACHI_USE_EXTERNAL_SDL3 "Compile external SDL3" ON "ENABLE_SDL3;NOT MSVC" OFF)
 
 cmake_dependent_option(ENABLE_LIBUSB "Enable the use of LibUSB" ON "NOT ANDROID" OFF)
 
@@ -527,32 +527,32 @@ if(ENABLE_QT)
 
 endif()
 
-# find SDL2 exports a bunch of variables that are needed, so its easier to do this outside of the sudachi_find_package
-if (ENABLE_SDL2)
-    if (SUDACHI_USE_BUNDLED_SDL2)
+# find SDL3 exports a bunch of variables that are needed, so its easier to do this outside of the sudachi_find_package
+if (ENABLE_SDL3)
+    if (SUDACHI_USE_BUNDLED_SDL3)
         # Detect toolchain and platform
         if ((MSVC_VERSION GREATER_EQUAL 1920 AND MSVC_VERSION LESS 1940) AND ARCHITECTURE_x86_64)
-            set(SDL2_VER "SDL2-2.28.2")
+            set(SDL3_VER "SDL3-3.1.2")
         else()
-            message(FATAL_ERROR "No bundled SDL2 binaries for your toolchain. Disable SUDACHI_USE_BUNDLED_SDL2 and provide your own.")
+            message(FATAL_ERROR "No bundled SDL3 binaries for your toolchain. Disable SUDACHI_USE_BUNDLED_SDL3 and provide your own.")
         endif()
 
-        if (DEFINED SDL2_VER)
-            download_bundled_external("sdl2/" ${SDL2_VER} SDL2_PREFIX)
+        if (DEFINED SDL3_VER)
+            download_bundled_external("sdl3/" ${SDL3_VER} SDL3_PREFIX)
         endif()
 
-        set(SDL2_FOUND YES)
-        set(SDL2_INCLUDE_DIR "${SDL2_PREFIX}/include" CACHE PATH "Path to SDL2 headers")
-        set(SDL2_LIBRARY "${SDL2_PREFIX}/lib/x64/SDL2.lib" CACHE PATH "Path to SDL2 library")
-        set(SDL2_DLL_DIR "${SDL2_PREFIX}/lib/x64/" CACHE PATH "Path to SDL2.dll")
+        set(SDL3_FOUND YES)
+        set(SDL3_INCLUDE_DIR "${SDL3_PREFIX}/include" CACHE PATH "Path to SDL3 headers")
+        set(SDL3_LIBRARY "${SDL3_PREFIX}/lib/x64/SDL3.lib" CACHE PATH "Path to SDL3 library")
+        set(SDL3_DLL_DIR "${SDL3_PREFIX}/lib/x64/" CACHE PATH "Path to SDL3.dll")
 
-        add_library(SDL2::SDL2 INTERFACE IMPORTED)
-        target_link_libraries(SDL2::SDL2 INTERFACE "${SDL2_LIBRARY}")
-        target_include_directories(SDL2::SDL2 INTERFACE "${SDL2_INCLUDE_DIR}")
-    elseif (SUDACHI_USE_EXTERNAL_SDL2)
-        message(STATUS "Using SDL2 from externals.")
+        add_library(SDL3::SDL3 INTERFACE IMPORTED)
+        target_link_libraries(SDL3::SDL3 INTERFACE "${SDL3_LIBRARY}")
+        target_include_directories(SDL3::SDL3 INTERFACE "${SDL3_INCLUDE_DIR}")
+    elseif (SUDACHI_USE_EXTERNAL_SDL3)
+        message(STATUS "Using SDL3 from externals.")
     else()
-        find_package(SDL2 2.26.4 REQUIRED)
+        find_package(SDL3 3.1.2 REQUIRED)
     endif()
 endif()
 

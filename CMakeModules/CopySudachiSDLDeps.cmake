@@ -4,5 +4,5 @@
 function(copy_sudachi_SDL_deps target_dir)
     include(WindowsCopyFiles)
     set(DLL_DEST "$<TARGET_FILE_DIR:${target_dir}>/")
-    windows_copy_files(${target_dir} ${SDL2_DLL_DIR} ${DLL_DEST} SDL2.dll)
+    windows_copy_files(${target_dir} ${SDL3_DLL_DIR} ${DLL_DEST} SDL3.dll)
 endfunction(copy_sudachi_SDL_deps)

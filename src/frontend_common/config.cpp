@@ -51,7 +51,7 @@ void Config::Initialize(const std::string& config_name) {
 
 void Config::Initialize(const std::optional<std::string> config_path) {
     const std::filesystem::path default_sdl_config_path =
-        FS::GetSudachiPath(FS::SudachiPath::ConfigDir) / "sdl2-config.ini";
+        FS::GetSudachiPath(FS::SudachiPath::ConfigDir) / "sdl3-config.ini";
     config_loc = config_path.value_or(FS::PathToUTF8String(default_sdl_config_path));
     void(FS::CreateParentDir(config_loc));
     SetUpIni();

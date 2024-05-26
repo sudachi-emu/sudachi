@@ -13,8 +13,8 @@
 class INIReader;
 
 class Config {
-    std::filesystem::path sdl2_config_loc;
-    std::unique_ptr<INIReader> sdl2_config;
+    std::filesystem::path sdl3_config_loc;
+    std::unique_ptr<INIReader> sdl3_config;
 
     bool LoadINI(const std::string& default_contents = "", bool retry = true);
     void ReadValues();
@@ -27,7 +27,7 @@ public:
 
 private:
     /**
-     * Applies a value read from the sdl2_config to a Setting.
+     * Applies a value read from the sdl3_config to a Setting.
      *
      * @param group The name of the INI group
      * @param setting The sudachi setting to modify

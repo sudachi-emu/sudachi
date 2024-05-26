@@ -453,9 +453,9 @@ if (SUDACHI_USE_BUNDLED_QT AND QT_VERSION VERSION_LESS 6)
     copy_sudachi_Qt5_deps(sudachi)
 endif()
 
-if (ENABLE_SDL2)
-    target_link_libraries(sudachi PRIVATE SDL2::SDL2)
-    target_compile_definitions(sudachi PRIVATE HAVE_SDL2)
+if (ENABLE_SDL3)
+    target_link_libraries(sudachi PRIVATE SDL3::SDL3)
+    target_compile_definitions(sudachi PRIVATE HAVE_SDL3)
 endif()
 
 if (MSVC)

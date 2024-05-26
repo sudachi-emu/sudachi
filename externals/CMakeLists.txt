@@ -62,8 +62,8 @@ if (ENABLE_LIBUSB AND NOT TARGET libusb::usb)
     add_subdirectory(libusb)
 endif()
 
-# SDL2
-if (SUDACHI_USE_EXTERNAL_SDL2)
+# SDL3
+if (SUDACHI_USE_EXTERNAL_SDL3)
     if (NOT WIN32)
         # Sudachi itself needs: Atomic Audio Events Joystick Haptic Sensor Threads Timers
         # Since 2.0.18 Atomic+Threads required for HIDAPI/libusb (see https://github.com/libsdl-org/SDL/issues/5095)

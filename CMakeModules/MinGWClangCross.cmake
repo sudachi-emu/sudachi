@@ -6,7 +6,7 @@ set(CMAKE_SYSTEM_NAME           Windows)
 set(CMAKE_SYSTEM_PROCESSOR      x86_64)
 
 set(CMAKE_FIND_ROOT_PATH        ${MINGW_PREFIX})
-set(SDL2_PATH                   ${MINGW_PREFIX})
+set(SDL3_PATH                   ${MINGW_PREFIX})
 set(MINGW_TOOL_PREFIX           ${CMAKE_SYSTEM_PROCESSOR}-w64-mingw32-)
 
 # Specify the cross compiler

@@ -201,7 +201,7 @@ if (SUDACHI_TESTS)
     add_subdirectory(tests)
 endif()
 
-if (ENABLE_SDL2)
+if (ENABLE_SDL3)
     add_subdirectory(sudachi_cmd)
 endif()
 

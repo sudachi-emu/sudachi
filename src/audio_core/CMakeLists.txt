@@ -241,14 +241,14 @@ if (ENABLE_CUBEB)
     target_compile_definitions(audio_core PRIVATE -DHAVE_CUBEB=1)
 endif()
 
-if (ENABLE_SDL2)
+if (ENABLE_SDL3)
     target_sources(audio_core PRIVATE
-        sink/sdl2_sink.cpp
-        sink/sdl2_sink.h
+        sink/sdl3_sink.cpp
+        sink/sdl3_sink.h
     )
 
-    target_link_libraries(audio_core PRIVATE SDL2::SDL2)
-    target_compile_definitions(audio_core PRIVATE HAVE_SDL2)
+    target_link_libraries(audio_core PRIVATE SDL3::SDL3)
+    target_compile_definitions(audio_core PRIVATE HAVE_SDL3)
 endif()
 
 if (ANDROID)

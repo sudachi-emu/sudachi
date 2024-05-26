@@ -382,7 +382,7 @@ bg_green =
 # Which audio output engine to use.
 # auto (default): Auto-select
 # cubeb: Cubeb audio engine (if available)
-# sdl2: SDL2 audio engine (if available)
+# sdl3: SDL3 audio engine (if available)
 # null: No audio output
 output_engine =
 

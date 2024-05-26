@@ -80,7 +80,7 @@ struct EnumMetadata {
 enum class AudioEngine : u32 {
     Auto,
     Cubeb,
-    Sdl2,
+    Sdl3,
     Null,
     Oboe,
 };
@@ -89,7 +89,7 @@ template <>
 inline std::vector<std::pair<std::string, AudioEngine>>
 EnumMetadata<AudioEngine>::Canonicalizations() {
     return {
-        {"auto", AudioEngine::Auto}, {"cubeb", AudioEngine::Cubeb}, {"sdl2", AudioEngine::Sdl2},
+        {"auto", AudioEngine::Auto}, {"cubeb", AudioEngine::Cubeb}, {"sdl3", AudioEngine::Sdl3},
         {"null", AudioEngine::Null}, {"oboe", AudioEngine::Oboe},
     };
 }

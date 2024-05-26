@@ -19,27 +19,27 @@
 namespace FS = Common::FS;
 
 const std::filesystem::path default_config_path =
-    FS::GetSudachiPath(FS::SudachiPath::ConfigDir) / "sdl2-config.ini";
+    FS::GetSudachiPath(FS::SudachiPath::ConfigDir) / "sdl3-config.ini";
 
 Config::Config(std::optional<std::filesystem::path> config_path)
-    : sdl2_config_loc{config_path.value_or(default_config_path)},
-      sdl2_config{std::make_unique<INIReader>(FS::PathToUTF8String(sdl2_config_loc))} {
+    : sdl3_config_loc{config_path.value_or(default_config_path)},
+      sdl3_config{std::make_unique<INIReader>(FS::PathToUTF8String(sdl3_config_loc))} {
     Reload();
 }
 
 Config::~Config() = default;
 
 bool Config::LoadINI(const std::string& default_contents, bool retry) {
-    const auto config_loc_str = FS::PathToUTF8String(sdl2_config_loc);
-    if (sdl2_config->ParseError() < 0) {
+    const auto config_loc_str = FS::PathToUTF8String(sdl3_config_loc);
+    if (sdl3_config->ParseError() < 0) {
         if (retry) {
             LOG_WARNING(Config, "Failed to load {}. Creating file from defaults...",
                         config_loc_str);
 
-            void(FS::CreateParentDir(sdl2_config_loc));
-            void(FS::WriteStringToFile(sdl2_config_loc, FS::FileType::TextFile, default_contents));
+            void(FS::CreateParentDir(sdl3_config_loc));
+            void(FS::WriteStringToFile(sdl3_config_loc, FS::FileType::TextFile, default_contents));
 
-            sdl2_config = std::make_unique<INIReader>(config_loc_str);
+            sdl3_config = std::make_unique<INIReader>(config_loc_str);
 
             return LoadINI(default_contents, false);
         }
@@ -80,7 +80,7 @@ static const std::array<std::array<int, 5>, Settings::NativeAnalog::NumAnalogs> 
 
 template <>
 void Config::ReadSetting(const std::string& group, Settings::Setting<std::string>& setting) {
-    std::string setting_value = sdl2_config->Get(group, setting.GetLabel(), setting.GetDefault());
+    std::string setting_value = sdl3_config->Get(group, setting.GetLabel(), setting.GetDefault());
     if (setting_value.empty()) {
         setting_value = setting.GetDefault();
     }
@@ -89,12 +89,12 @@ void Config::ReadSetting(const std::string& group, Settings::Setting<std::string
 
 template <>
 void Config::ReadSetting(const std::string& group, Settings::Setting<bool>& setting) {
-    setting = sdl2_config->GetBoolean(group, setting.GetLabel(), setting.GetDefault());
+    setting = sdl3_config->GetBoolean(group, setting.GetLabel(), setting.GetDefault());
 }
 
 template <typename Type, bool ranged>
 void Config::ReadSetting(const std::string& group, Settings::Setting<Type, ranged>& setting) {
-    setting = static_cast<Type>(sdl2_config->GetInteger(group, setting.GetLabel(),
+    setting = static_cast<Type>(sdl3_config->GetInteger(group, setting.GetLabel(),
                                                         static_cast<long>(setting.GetDefault())));
 }
 
@@ -109,7 +109,7 @@ void Config::ReadCategory(Settings::Category category) {
             }
         }();
         std::string setting_value =
-            sdl2_config->Get(category_name, setting->GetLabel(), setting->DefaultToString());
+            sdl3_config->Get(category_name, setting->GetLabel(), setting->DefaultToString());
         setting->LoadString(setting_value);
     }
 }
@@ -125,7 +125,7 @@ void Config::ReadValues() {
         for (int i = 0; i < Settings::NativeButton::NumButtons; ++i) {
             std::string default_param = InputCommon::GenerateKeyboardParam(default_buttons[i]);
             player.buttons[i] =
-                sdl2_config->Get(group, Settings::NativeButton::mapping[i], default_param);
+                sdl3_config->Get(group, Settings::NativeButton::mapping[i], default_param);
             if (player.buttons[i].empty()) {
                 player.buttons[i] = default_param;
             }
@@ -136,7 +136,7 @@ void Config::ReadValues() {
                 default_analogs[i][0], default_analogs[i][1], default_analogs[i][2],
                 default_analogs[i][3], default_analogs[i][4], 0.5f);
             player.analogs[i] =
-                sdl2_config->Get(group, Settings::NativeAnalog::mapping[i], default_param);
+                sdl3_config->Get(group, Settings::NativeAnalog::mapping[i], default_param);
             if (player.analogs[i].empty()) {
                 player.analogs[i] = default_param;
             }
@@ -148,18 +148,18 @@ void Config::ReadValues() {
             auto& player_motions = player.motions[i];
 
             player_motions =
-                sdl2_config->Get(group, Settings::NativeMotion::mapping[i], default_param);
+                sdl3_config->Get(group, Settings::NativeMotion::mapping[i], default_param);
             if (player_motions.empty()) {
                 player_motions = default_param;
             }
         }
 
-        player.connected = sdl2_config->GetBoolean(group, "connected", false);
+        player.connected = sdl3_config->GetBoolean(group, "connected", false);
     }
 
     for (int i = 0; i < Settings::NativeButton::NumButtons; ++i) {
         std::string default_param = InputCommon::GenerateKeyboardParam(default_buttons[i]);
-        Settings::values.debug_pad_buttons[i] = sdl2_config->Get(
+        Settings::values.debug_pad_buttons[i] = sdl3_config->Get(
             "ControlsGeneral", std::string("debug_pad_") + Settings::NativeButton::mapping[i],
             default_param);
         if (Settings::values.debug_pad_buttons[i].empty())
@@ -170,7 +170,7 @@ void Config::ReadValues() {
         std::string default_param = InputCommon::GenerateAnalogParamFromKeys(
             default_analogs[i][0], default_analogs[i][1], default_analogs[i][2],
             default_analogs[i][3], default_analogs[i][4], 0.5f);
-        Settings::values.debug_pad_analogs[i] = sdl2_config->Get(
+        Settings::values.debug_pad_analogs[i] = sdl3_config->Get(
             "ControlsGeneral", std::string("debug_pad_") + Settings::NativeAnalog::mapping[i],
             default_param);
         if (Settings::values.debug_pad_analogs[i].empty())
@@ -178,24 +178,24 @@ void Config::ReadValues() {
     }
 
     Settings::values.touchscreen.enabled =
-        sdl2_config->GetBoolean("ControlsGeneral", "touch_enabled", true);
+        sdl3_config->GetBoolean("ControlsGeneral", "touch_enabled", true);
     Settings::values.touchscreen.rotation_angle =
-        sdl2_config->GetInteger("ControlsGeneral", "touch_angle", 0);
+        sdl3_config->GetInteger("ControlsGeneral", "touch_angle", 0);
     Settings::values.touchscreen.diameter_x =
-        sdl2_config->GetInteger("ControlsGeneral", "touch_diameter_x", 15);
+        sdl3_config->GetInteger("ControlsGeneral", "touch_diameter_x", 15);
     Settings::values.touchscreen.diameter_y =
-        sdl2_config->GetInteger("ControlsGeneral", "touch_diameter_y", 15);
+        sdl3_config->GetInteger("ControlsGeneral", "touch_diameter_y", 15);
 
     int num_touch_from_button_maps =
-        sdl2_config->GetInteger("ControlsGeneral", "touch_from_button_map", 0);
+        sdl3_config->GetInteger("ControlsGeneral", "touch_from_button_map", 0);
     if (num_touch_from_button_maps > 0) {
         for (int i = 0; i < num_touch_from_button_maps; ++i) {
             Settings::TouchFromButtonMap map;
-            map.name = sdl2_config->Get("ControlsGeneral",
+            map.name = sdl3_config->Get("ControlsGeneral",
                                         std::string("touch_from_button_maps_") + std::to_string(i) +
                                             std::string("_name"),
                                         "default");
-            const int num_touch_maps = sdl2_config->GetInteger(
+            const int num_touch_maps = sdl3_config->GetInteger(
                 "ControlsGeneral",
                 std::string("touch_from_button_maps_") + std::to_string(i) + std::string("_count"),
                 0);
@@ -203,7 +203,7 @@ void Config::ReadValues() {
 
             for (int j = 0; j < num_touch_maps; ++j) {
                 std::string touch_mapping =
-                    sdl2_config->Get("ControlsGeneral",
+                    sdl3_config->Get("ControlsGeneral",
                                      std::string("touch_from_button_maps_") + std::to_string(i) +
                                          std::string("_bind_") + std::to_string(j),
                                      "");
@@ -239,28 +239,28 @@ void Config::ReadValues() {
 
     // Data Storage
     FS::SetSudachiPath(FS::SudachiPath::NANDDir,
-                       sdl2_config->Get("Data Storage", "nand_directory",
+                       sdl3_config->Get("Data Storage", "nand_directory",
                                         FS::GetSudachiPathString(FS::SudachiPath::NANDDir)));
     FS::SetSudachiPath(FS::SudachiPath::SDMCDir,
-                       sdl2_config->Get("Data Storage", "sdmc_directory",
+                       sdl3_config->Get("Data Storage", "sdmc_directory",
                                         FS::GetSudachiPathString(FS::SudachiPath::SDMCDir)));
     FS::SetSudachiPath(FS::SudachiPath::LoadDir,
-                       sdl2_config->Get("Data Storage", "load_directory",
+                       sdl3_config->Get("Data Storage", "load_directory",
                                         FS::GetSudachiPathString(FS::SudachiPath::LoadDir)));
     FS::SetSudachiPath(FS::SudachiPath::DumpDir,
-                       sdl2_config->Get("Data Storage", "dump_directory",
+                       sdl3_config->Get("Data Storage", "dump_directory",
                                         FS::GetSudachiPathString(FS::SudachiPath::DumpDir)));
 
     // Debugging
     Settings::values.record_frame_times =
-        sdl2_config->GetBoolean("Debugging", "record_frame_times", false);
+        sdl3_config->GetBoolean("Debugging", "record_frame_times", false);
 
-    const auto title_list = sdl2_config->Get("AddOns", "title_ids", "");
+    const auto title_list = sdl3_config->Get("AddOns", "title_ids", "");
     std::stringstream ss(title_list);
     std::string line;
     while (std::getline(ss, line, '|')) {
         const auto title_id = std::strtoul(line.c_str(), nullptr, 16);
-        const auto disabled_list = sdl2_config->Get("AddOns", "disabled_" + line, "");
+        const auto disabled_list = sdl3_config->Get("AddOns", "disabled_" + line, "");
 
         std::stringstream inner_ss(disabled_list);
         std::string inner_line;
@@ -274,6 +274,6 @@ void Config::ReadValues() {
 }
 
 void Config::Reload() {
-    LoadINI(DefaultINI::sdl2_config_file);
+    LoadINI(DefaultINI::sdl3_config_file);
     ReadValues();
 }

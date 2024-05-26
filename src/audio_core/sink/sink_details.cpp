@@ -13,8 +13,8 @@
 #ifdef HAVE_CUBEB
 #include "audio_core/sink/cubeb_sink.h"
 #endif
-#ifdef HAVE_SDL2
-#include "audio_core/sink/sdl2_sink.h"
+#ifdef HAVE_SDL3
+#include "audio_core/sink/sdl3_sink.h"
 #endif
 #include "audio_core/sink/null_sink.h"
 #include "common/logging/log.h"
@@ -59,9 +59,9 @@ constexpr SinkDetails sink_details[] = {
         &IsCubebSuitable,
     },
 #endif
-#ifdef HAVE_SDL2
+#ifdef HAVE_SDL3
     SinkDetails{
-        Settings::AudioEngine::Sdl2,
+        Settings::AudioEngine::Sdl3,
         [](std::string_view device_id) -> std::unique_ptr<Sink> {
             return std::make_unique<SDLSink>(device_id);
         },

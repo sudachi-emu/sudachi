@@ -5,7 +5,7 @@
 
 namespace DefaultINI {
 
-const char* sdl2_config_file =
+const char* sdl3_config_file =
     R"(
 [ControlsP0]
 # The input devices and parameters for each Switch native input
@@ -424,7 +424,7 @@ bg_green =
 # Which audio output engine to use.
 # auto (default): Auto-select
 # cubeb: Cubeb audio engine (if available)
-# sdl2: SDL2 audio engine (if available)
+# sdl3: SDL3 audio engine (if available)
 # null: No audio output
 output_engine =
 

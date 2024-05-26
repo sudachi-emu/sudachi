@@ -13,14 +13,14 @@ function(create_resource file output filename)
 endfunction()
 
 add_executable(sudachi-cmd
-    emu_window/emu_window_sdl2.cpp
-    emu_window/emu_window_sdl2.h
-    emu_window/emu_window_sdl2_gl.cpp
-    emu_window/emu_window_sdl2_gl.h
-    emu_window/emu_window_sdl2_null.cpp
-    emu_window/emu_window_sdl2_null.h
-    emu_window/emu_window_sdl2_vk.cpp
-    emu_window/emu_window_sdl2_vk.h
+    emu_window/emu_window_sdl3.cpp
+    emu_window/emu_window_sdl3.h
+    emu_window/emu_window_sdl3_gl.cpp
+    emu_window/emu_window_sdl3_gl.h
+    emu_window/emu_window_sdl3_null.cpp
+    emu_window/emu_window_sdl3_null.h
+    emu_window/emu_window_sdl3_vk.cpp
+    emu_window/emu_window_sdl3_vk.h
     precompiled_headers.h
     sdl_config.cpp
     sdl_config.h
@@ -38,7 +38,7 @@ target_link_libraries(sudachi-cmd PRIVATE ${PLATFORM_LIBRARIES} Threads::Threads
 create_resource("../../dist/sudachi.bmp" "sudachi_cmd/sudachi_icon.h" "sudachi_icon")
 target_include_directories(sudachi-cmd PRIVATE ${RESOURCES_DIR})
 
-target_link_libraries(sudachi-cmd PRIVATE SDL2::SDL2 Vulkan::Headers)
+target_link_libraries(sudachi-cmd PRIVATE SDL3::SDL3 Vulkan::Headers)
 
 if(UNIX AND NOT APPLE)
     install(TARGETS sudachi-cmd)

@@ -19,10 +19,10 @@ class InputSubsystem;
 enum class MouseButton;
 } // namespace InputCommon
 
-class EmuWindow_SDL2 : public Core::Frontend::EmuWindow {
+class EmuWindow_SDL3 : public Core::Frontend::EmuWindow {
 public:
-    explicit EmuWindow_SDL2(InputCommon::InputSubsystem* input_subsystem_, Core::System& system_);
-    ~EmuWindow_SDL2();
+    explicit EmuWindow_SDL3(InputCommon::InputSubsystem* input_subsystem_, Core::System& system_);
+    ~EmuWindow_SDL3();
 
     /// Whether the window is still open, and a close request hasn't yet been sent
     bool IsOpen() const;
@@ -79,11 +79,11 @@ protected:
     /// Is the window being shown?
     bool is_shown = true;
 
-    /// Internal SDL2 render window
+    /// Internal SDL3 render window
     SDL_Window* render_window{};
 
     /// Keeps track of how often to update the title bar during gameplay
-    u32 last_time = 0;
+    u64 last_time = 0;
 
     /// Input subsystem to use with this window.
     InputCommon::InputSubsystem* input_subsystem;
