@@ -53,6 +53,8 @@ enum class ControllerSupportResult : u32 {
     Cancel = 2,
 };
 
+enum class NpadJoyDeviceHoldType : u32 { Vertical = 0, Horizontal = 1 };
+
 struct ControllerSupportArgPrivate {
     u32 arg_private_size{};
     u32 arg_size{};
@@ -61,7 +63,7 @@ struct ControllerSupportArgPrivate {
     ControllerSupportMode mode{};
     ControllerSupportCaller caller{};
     Core::HID::NpadStyleSet style_set{};
-    u32 joy_hold_type{};
+    NpadJoyDeviceHoldType joy_hold_type{};
 };
 static_assert(sizeof(ControllerSupportArgPrivate) == 0x14,
               "ControllerSupportArgPrivate has incorrect size.");

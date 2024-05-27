@@ -212,6 +212,9 @@ struct Values {
     // Play time
     Setting<bool> show_play_time{linkage, true, "show_play_time", Category::UiGameList};
 
+    // Total times
+    Setting<bool> show_total_times{linkage, true, "show_total_times", Category::UiGameList};
+
     bool configuration_applied;
     bool reset_to_defaults;
     bool shortcut_already_warned{false};

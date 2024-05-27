@@ -125,6 +125,8 @@ ConfigureUi::ConfigureUi(Core::System& system_, QWidget* parent)
     connect(ui->show_types, &QCheckBox::stateChanged, this, &ConfigureUi::RequestGameListUpdate);
     connect(ui->show_play_time, &QCheckBox::stateChanged, this,
             &ConfigureUi::RequestGameListUpdate);
+    connect(ui->show_total_times, &QCheckBox::stateChanged, this,
+            &ConfigureUi::RequestGameListUpdate);
     connect(ui->game_icon_size_combobox, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
             &ConfigureUi::RequestGameListUpdate);
     connect(ui->folder_icon_size_combobox, QOverload<int>::of(&QComboBox::currentIndexChanged),
@@ -170,6 +172,7 @@ void ConfigureUi::ApplyConfiguration() {
     UISettings::values.show_size = ui->show_size->isChecked();
     UISettings::values.show_types = ui->show_types->isChecked();
     UISettings::values.show_play_time = ui->show_play_time->isChecked();
+    UISettings::values.show_total_times = ui->show_total_times->isChecked();
     UISettings::values.game_icon_size = ui->game_icon_size_combobox->currentData().toUInt();
     UISettings::values.folder_icon_size = ui->folder_icon_size_combobox->currentData().toUInt();
     UISettings::values.row_1_text_id = ui->row_1_text_combobox->currentData().toUInt();
@@ -200,6 +203,7 @@ void ConfigureUi::SetConfiguration() {
     ui->show_size->setChecked(UISettings::values.show_size.GetValue());
     ui->show_types->setChecked(UISettings::values.show_types.GetValue());
     ui->show_play_time->setChecked(UISettings::values.show_play_time.GetValue());
+    ui->show_total_times->setChecked(UISettings::values.show_total_times.GetValue());
     ui->game_icon_size_combobox->setCurrentIndex(
         ui->game_icon_size_combobox->findData(UISettings::values.game_icon_size.GetValue()));
     ui->folder_icon_size_combobox->setCurrentIndex(
@@ -262,7 +266,7 @@ void ConfigureUi::InitializeLanguageComboBox() {
 #else
         const QString country = QLocale::countryToString(QLocale(locale).country());
         ui->language_combobox->addItem(QStringLiteral("%1 (%2)").arg(lang, country), locale);
-        #endif
+#endif
     }
 
     // Unlike other configuration changes, interface language changes need to be reflected on the

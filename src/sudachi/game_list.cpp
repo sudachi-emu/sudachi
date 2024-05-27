@@ -344,6 +344,7 @@ GameList::GameList(FileSys::VirtualFilesystem vfs_, FileSys::ManualContentProvid
     tree_view->setColumnHidden(COLUMN_ADD_ONS, !UISettings::values.show_add_ons);
     tree_view->setColumnHidden(COLUMN_COMPATIBILITY, !UISettings::values.show_compat);
     tree_view->setColumnHidden(COLUMN_PLAY_TIME, !UISettings::values.show_play_time);
+    tree_view->setColumnHidden(COLUMN_TOTAL_TIMES, !UISettings::values.show_total_times);
     item_model->setSortRole(GameListItemPath::SortRole);
 
     connect(main_window, &GMainWindow::UpdateThemedIcons, this, &GameList::OnUpdateThemedIcons);
@@ -800,6 +801,7 @@ void GameList::RetranslateUI() {
     item_model->setHeaderData(COLUMN_FILE_TYPE, Qt::Horizontal, tr("File type"));
     item_model->setHeaderData(COLUMN_SIZE, Qt::Horizontal, tr("Size"));
     item_model->setHeaderData(COLUMN_PLAY_TIME, Qt::Horizontal, tr("Play time"));
+    item_model->setHeaderData(COLUMN_TOTAL_TIMES, Qt::Horizontal, tr("Total times"));
 }
 
 void GameListSearchField::changeEvent(QEvent* event) {
@@ -828,6 +830,7 @@ void GameList::PopulateAsync(QVector<UISettings::GameDir>& game_dirs) {
     tree_view->setColumnHidden(COLUMN_FILE_TYPE, !UISettings::values.show_types);
     tree_view->setColumnHidden(COLUMN_SIZE, !UISettings::values.show_size);
     tree_view->setColumnHidden(COLUMN_PLAY_TIME, !UISettings::values.show_play_time);
+    tree_view->setColumnHidden(COLUMN_TOTAL_TIMES, !UISettings::values.show_total_times);
 
     // Cancel any existing worker.
     current_worker.reset();

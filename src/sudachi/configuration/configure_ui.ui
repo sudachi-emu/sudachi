@@ -112,6 +112,13 @@
          </widget>
         </item>
         <item>
+         <widget class="QCheckBox" name="show_total_times">
+          <property name="text">
+           <string>Show Total Times Column</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <layout class="QHBoxLayout" name="game_icon_size_qhbox_layout_2">
           <item>
            <widget class="QLabel" name="game_icon_size_label">
