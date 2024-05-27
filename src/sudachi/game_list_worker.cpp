@@ -215,7 +215,7 @@ QList<QStandardItem*> MakeGameListEntry(const std::string& path, const std::stri
         new GameListItem(file_type_string),
         new GameListItemSize(size),
         new GameListItemPlayTime(play_time_manager.GetPlayTime(program_id)),
-    };
+        new GameListItemTotalTimes(play_time_manager.GetTotalTimes(program_id))};
 
     const auto patch_versions = GetGameListCachedObject(
         fmt::format("{:016X}", patch.GetTitleID()), "pv.txt", [&patch, &loader] {

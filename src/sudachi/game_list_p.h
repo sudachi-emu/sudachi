@@ -247,6 +247,31 @@ public:
     }
 };
 
+/**
+ * GameListItem for Play Time values.
+ * This object stores the play time of a game in seconds, and its readable
+ * representation in minutes/hours
+ */
+class GameListItemTotalTimes : public GameListItem {
+public:
+    static constexpr int TotalTimesRole = SortRole;
+
+    GameListItemTotalTimes() = default;
+    explicit GameListItemTotalTimes(const qulonglong times_count) {
+        setData(times_count, TotalTimesRole);
+    }
+
+    void setData(const QVariant& value, int role) override {
+        qulonglong times_count = value.toULongLong();
+        GameListItem::setData(PlayTime::ReadableTotalTimes(times_count), Qt::DisplayRole);
+        GameListItem::setData(value, TotalTimesRole);
+    }
+
+    bool operator<(const QStandardItem& other) const override {
+        return data(TotalTimesRole).toULongLong() < other.data(TotalTimesRole).toULongLong();
+    }
+};
+
 class GameListDir : public GameListItem {
 public:
     static constexpr int GameDirRole = Qt::UserRole + 2;

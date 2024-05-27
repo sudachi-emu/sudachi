@@ -16,9 +16,9 @@
 
 #include "common/common_types.h"
 #include "core/core.h"
-#include "uisettings.h"
 #include "sudachi/compatibility_list.h"
 #include "sudachi/play_time_manager.h"
+#include "uisettings.h"
 
 namespace Core {
 class System;
@@ -77,6 +77,7 @@ public:
         COLUMN_FILE_TYPE,
         COLUMN_SIZE,
         COLUMN_PLAY_TIME,
+        COLUMN_TOTAL_TIMES,
         COLUMN_COUNT, // Number of columns
     };
 

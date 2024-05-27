@@ -102,7 +102,7 @@ void PushInShowController(Core::System& system, AppletStorageChannel& channel) {
                          // ShowControllerFirmwareUpdateForSystem/ShowControllerKeyRemappingForSystem,
                          // which sets this to the input param
         .style_set = Core::HID::NpadStyleSet::None,
-        .joy_hold_type = 0,
+        .joy_hold_type = Frontend::NpadJoyDeviceHoldType::Vertical,
     };
     std::vector<u8> common_args_data(sizeof(common_args));
     std::vector<u8> private_args_data(sizeof(private_args));

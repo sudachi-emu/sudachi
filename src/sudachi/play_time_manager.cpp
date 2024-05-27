@@ -18,6 +18,7 @@ namespace {
 struct PlayTimeElement {
     ProgramId program_id;
     PlayTime play_time;
+    TotalTimes total_times;
 };
 
 std::optional<std::filesystem::path> GetCurrentUserPlayTimePath(
@@ -57,9 +58,9 @@ std::optional<std::filesystem::path> GetCurrentUserPlayTimePath(
             return false;
         }
 
-        for (const auto& [program_id, play_time] : elements) {
+        for (const auto& [program_id, play_time, total_times] : elements) {
             if (program_id != 0) {
-                out_play_time_db[program_id] = play_time;
+                out_play_time_db[program_id] = {play_time, total_times};
             }
         }
     }
@@ -89,7 +90,7 @@ std::optional<std::filesystem::path> GetCurrentUserPlayTimePath(
 
     for (auto& [program_id, play_time] : play_time_db) {
         if (program_id != 0) {
-            elements.push_back(PlayTimeElement{program_id, play_time});
+            elements.push_back(PlayTimeElement{program_id, play_time.first, play_time.second});
         }
     }
 
@@ -139,7 +140,8 @@ void PlayTimeManager::AutoTimestamp(std::stop_token stop_token) {
     while (!stop_token.stop_requested()) {
         Common::StoppableTimedWait(stop_token, 30s);
 
-        database[running_program_id] += GetDuration();
+        database[running_program_id].first += GetDuration();
+        database[running_program_id].second += 1;
         Save();
     }
 }
@@ -153,7 +155,16 @@ void PlayTimeManager::Save() {
 u64 PlayTimeManager::GetPlayTime(u64 program_id) const {
     auto it = database.find(program_id);
     if (it != database.end()) {
-        return it->second;
+        return it->second.first;
+    } else {
+        return 0;
+    }
+}
+
+u64 PlayTimeManager::GetTotalTimes(u64 program_id) const {
+    auto it = database.find(program_id);
+    if (it != database.end()) {
+        return it->second.second;
     } else {
         return 0;
     }
@@ -177,6 +188,14 @@ QString ReadablePlayTime(qulonglong time_seconds) {
     return QStringLiteral("%L1 %2")
         .arg(value, 0, 'f', !is_minutes && time_seconds % 60 != 0)
         .arg(QString::fromUtf8(unit));
+}
+
+QString ReadableTotalTimes(qulonglong times_count) {
+    if (times_count == 0) {
+        return {};
+    }
+
+    return QStringLiteral("%L1").arg((double)times_count, 0, 'f', 0);
 }
 
 } // namespace PlayTime
