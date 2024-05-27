@@ -29,7 +29,7 @@ IQueryService::IQueryService(Core::System& system_) : ServiceFramework{system_, 
         {14, nullptr, "QueryRecentlyPlayedApplication"},
         {15, nullptr, "GetRecentlyPlayedApplicationUpdateEvent"},
         {16, nullptr, "QueryApplicationPlayStatisticsByUserAccountIdForSystemV0"},
-        {17, nullptr, "QueryLastPlayTime"},
+        {17, D<&IQueryService::QueryLastPlayTime>, "QueryLastPlayTime"},
         {18, nullptr, "QueryApplicationPlayStatisticsForSystem"},
         {19, nullptr, "QueryApplicationPlayStatisticsByUserAccountIdForSystem"},
     };
@@ -50,6 +50,15 @@ Result IQueryService::QueryPlayStatisticsByApplicationIdAndUserAccountId(
 
     LOG_WARNING(Service_NS, "(STUBBED) called. unknown={}. application_id={:016X}, account_id={}",
                 unknown, application_id, account_id.uuid.FormattedString());
+    R_SUCCEED();
+}
+
+Result IQueryService::QueryLastPlayTime(
+    Out<s32> out_entries, u8 unknown,
+    OutArray<LastPlayTime, BufferAttr_HipcMapAlias> out_last_play_times,
+    InArray<s32, BufferAttr_HipcMapAlias> application_ids) {
+    *out_entries = 1;
+    *out_last_play_times = {};
     R_SUCCEED();
 }
 

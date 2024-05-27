@@ -31,7 +31,7 @@ PDM_QRY::PDM_QRY(Core::System& system_) : ServiceFramework{system_, "pdm:qry"} {
             {14, nullptr, "QueryRecentlyPlayedApplication"},
             {15, nullptr, "GetRecentlyPlayedApplicationUpdateEvent"},
             {16, nullptr, "QueryApplicationPlayStatisticsByUserAccountIdForSystemV0"},
-            {17, nullptr, "QueryLastPlayTime"},
+            {17, &PDM_QRY::QueryLastPlayTime, "QueryLastPlayTime"},
             {18, nullptr, "QueryApplicationPlayStatisticsForSystem"},
             {19, nullptr, "QueryApplicationPlayStatisticsByUserAccountIdForSystem"},
         };
@@ -62,6 +62,14 @@ void PDM_QRY::QueryPlayStatisticsByApplicationIdAndUserAccountId(HLERequestConte
     IPC::ResponseBuilder rb{ctx, 12};
     rb.Push(ResultSuccess);
     rb.PushRaw(statistics);
+}
+
+void PDM_QRY::QueryLastPlayTime(HLERequestContext& ctx) {
+    const s32 total_entries = 1;
+
+    IPC::ResponseBuilder rb{ctx, 3};
+    rb.Push(ResultSuccess);
+    rb.Push(total_entries);
 }
 
 } // namespace Service::NS

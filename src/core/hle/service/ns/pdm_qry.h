@@ -27,6 +27,7 @@ public:
 
 private:
     void QueryPlayStatisticsByApplicationIdAndUserAccountId(HLERequestContext& ctx);
+    void QueryLastPlayTime(HLERequestContext& ctx);
 };
 
 } // namespace Service::NS
