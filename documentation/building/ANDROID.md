@@ -22,12 +22,12 @@ Documentation on how to build Sudachi for Android
 ## Steps
 ### Step I - Cloning
 ```sh
-cd /path/to/directory
+cd path/to/directory
 git clone --recursive https://github.com/sudachi-emu/sudachi
 ```
 
 ### Step II - Building
 ```sh
-cd /path/to/sudachi/directory
+cd src/android
 gradlew.bat build # gradlew if building on a Unix system
 ```
