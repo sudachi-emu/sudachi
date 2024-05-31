@@ -48,8 +48,8 @@ ICommonStateGetter::ICommonStateGetter(Core::System& system_, std::shared_ptr<Ap
         {59, nullptr, "SetVrPositionForDebug"},
         {60, D<&ICommonStateGetter::GetDefaultDisplayResolution>, "GetDefaultDisplayResolution"},
         {61, D<&ICommonStateGetter::GetDefaultDisplayResolutionChangeEvent>, "GetDefaultDisplayResolutionChangeEvent"},
-        {62, nullptr, "GetHdcpAuthenticationState"},
-        {63, nullptr, "GetHdcpAuthenticationStateChangeEvent"},
+        {62, D<&ICommonStateGetter::GetHdcpAuthenticationState>, "GetHdcpAuthenticationState"},
+        {63, D<&ICommonStateGetter::GetHdcpAuthenticationStateChangeEvent>, "GetHdcpAuthenticationStateChangeEvent"},
         {64, nullptr, "SetTvPowerStateMatchingMode"},
         {65, nullptr, "GetApplicationIdByContentActionName"},
         {66, &ICommonStateGetter::SetCpuBoostMode, "SetCpuBoostMode"},
@@ -139,6 +139,19 @@ Result ICommonStateGetter::GetDefaultDisplayResolutionChangeEvent(
     OutCopyHandle<Kernel::KReadableEvent> out_event) {
     LOG_DEBUG(Service_AM, "called");
     *out_event = m_applet->lifecycle_manager.GetOperationModeChangedSystemEvent().GetHandle();
+    R_SUCCEED();
+}
+
+Result ICommonStateGetter::GetHdcpAuthenticationState(Out<s32> out_state) {
+    LOG_DEBUG(Service_AM, "called");
+    *out_state = 1;
+    R_SUCCEED();
+}
+
+Result ICommonStateGetter::GetHdcpAuthenticationStateChangeEvent(
+    OutCopyHandle<Kernel::KReadableEvent> out_event) {
+    LOG_DEBUG(Service_AM, "called");
+    *out_event = m_applet->lifecycle_manager.GetHDCPStateChangedEvent().GetHandle();
     R_SUCCEED();
 }
 

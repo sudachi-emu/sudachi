@@ -82,7 +82,7 @@ struct UUID {
      */
     static constexpr UUID MakeDefault() {
         return UUID{
-            {'y', 'u', 'z', 'u', ' ', 'D', 'e', 'f', 'a', 'u', 'l', 't', ' ', 'U', 'I', 'D'},
+            {'s', 'u', 'd', 'a', ' ', 'D', 'e', 'f', 'a', 'u', 'l', 't', ' ', 'U', 'I', 'D'},
         };
     }
 

@@ -656,7 +656,7 @@ public:
         void* native_context{};
         std::atomic<u32> lock{1};
         bool is_running{};
-        u32 magic{Common::MakeMagic('Y', 'U', 'Z', 'U')};
+        u32 magic{Common::MakeMagic('S', 'U', 'D', 'A')};
     };
 
     NativeExecutionParameters& GetNativeExecutionParameters() {

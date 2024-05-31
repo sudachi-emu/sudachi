@@ -952,7 +952,27 @@ void RasterizerVulkan::UpdateDynamicStates() {
                 UpdateDepthBiasEnable(regs);
             }
             if (device.IsExtExtendedDynamicState3EnablesSupported()) {
-                UpdateLogicOpEnable(regs);
+                const auto old = regs.logic_op.enable;
+
+                if (device.GetDriverID() == VkDriverIdKHR::VK_DRIVER_ID_AMD_OPEN_SOURCE ||
+                    device.GetDriverID() == VkDriverIdKHR::VK_DRIVER_ID_AMD_OPEN_SOURCE_KHR) {
+                    struct In {
+                        const Tegra::Engines::Maxwell3D::Regs::VertexAttribute::Type d;
+                        In(Tegra::Engines::Maxwell3D::Regs::VertexAttribute::Type n) : d(n) {}
+                        bool operator()(Tegra::Engines::Maxwell3D::Regs::VertexAttribute n) const {
+                            return n.type == d;
+                        }
+                    };
+
+                    auto has_float = std::any_of(
+                        regs.vertex_attrib_format.begin(), regs.vertex_attrib_format.end(),
+                        In(Tegra::Engines::Maxwell3D::Regs::VertexAttribute::Type::Float));
+
+                    regs.logic_op.enable = static_cast<u32>(!has_float);
+                    UpdateLogicOpEnable(regs);
+                    regs.logic_op.enable = old;
+                } else
+                    UpdateLogicOpEnable(regs);
                 UpdateDepthClampEnable(regs);
             }
         }
@@ -1319,16 +1339,8 @@ void RasterizerVulkan::UpdateLogicOpEnable(Tegra::Engines::Maxwell3D::Regs& regs
         return;
     }
 
-    scheduler.Record([&, regs](vk::CommandBuffer cmdbuf) {
-        bool has_float = false;
-
-        if (std::any_of(regs.vertex_attrib_format.begin(), regs.vertex_attrib_format.end(),
-                        [&](Tegra::Engines::Maxwell3D::Regs::VertexAttribute attribute) {
-                            return IsAnyFloat(attribute);
-                        }))
-            has_float = true;
-
-        cmdbuf.SetLogicOpEnableEXT((regs.logic_op.enable != 0 && !has_float) ? true : false);
+    scheduler.Record([&, enable = regs.logic_op.enable](vk::CommandBuffer cmdbuf) {
+        cmdbuf.SetLogicOpEnableEXT(enable != 0);
     });
 }
 

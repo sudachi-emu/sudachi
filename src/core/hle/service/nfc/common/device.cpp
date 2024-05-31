@@ -628,7 +628,7 @@ Result NfcDevice::Restore() {
         LOG_ERROR(Service_NFP, "Regenerating mii data");
         Mii::StoreData new_mii{};
         new_mii.BuildRandom(Mii::Age::All, Mii::Gender::All, Mii::Race::All);
-        new_mii.SetNickname({u'y', u'u', u'z', u'u', u'\0'});
+        new_mii.SetNickname({u's', u'u', u'd', u'a', u'\0'});
 
         tag_data.owner_mii.BuildFromStoreData(new_mii);
         tag_data.mii_extension.SetFromStoreData(new_mii);
@@ -1494,7 +1494,7 @@ void NfcDevice::BuildAmiiboWithoutKeys(NFP::NTAG215File& stubbed_tag_data,
     settings.write_date = GetAmiiboDate(GetCurrentPosixTime());
 
     // Register info
-    SetAmiiboName(settings, {'y', 'u', 'z', 'u', 'A', 'm', 'i', 'i', 'b', 'o'});
+    SetAmiiboName(settings, {'s', 'u', 'd', 'a', 'A', 'm', 'i', 'i', 'b', 'o'});
     settings.settings.font_region.Assign(0);
     settings.init_date = GetAmiiboDate(GetCurrentPosixTime());
     store_data.BuildBase(Mii::Gender::Male);

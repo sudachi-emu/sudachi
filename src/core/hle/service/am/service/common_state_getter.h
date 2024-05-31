@@ -35,6 +35,8 @@ private:
     Result GetWriterLockAccessorEx(Out<SharedPointer<ILockAccessor>> out_lock_accessor,
                                    u32 button_type);
     Result GetDefaultDisplayResolutionChangeEvent(OutCopyHandle<Kernel::KReadableEvent> out_event);
+    Result GetHdcpAuthenticationState(Out<s32> out_state);
+    Result GetHdcpAuthenticationStateChangeEvent(OutCopyHandle<Kernel::KReadableEvent> out_event);
     Result GetOperationMode(Out<OperationMode> out_operation_mode);
     Result GetPerformanceMode(Out<APM::PerformanceMode> out_performance_mode);
     Result GetBootMode(Out<PM::SystemBootMode> out_boot_mode);

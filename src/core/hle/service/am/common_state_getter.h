@@ -55,6 +55,8 @@ private:
     void GetAcquiredSleepLockEvent(HLERequestContext& ctx);
     void GetReaderLockAccessorEx(HLERequestContext& ctx);
     void GetDefaultDisplayResolutionChangeEvent(HLERequestContext& ctx);
+    void GetHdcpAuthenticationState(HLERequestContext& ctx);
+    void GetHdcpAuthenticationStateChangeEvent(HLERequestContext& ctx);
     void GetOperationMode(HLERequestContext& ctx);
     void GetPerformanceMode(HLERequestContext& ctx);
     void GetBootMode(HLERequestContext& ctx);

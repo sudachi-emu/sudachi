@@ -1208,17 +1208,24 @@ void RasterizerOpenGL::SyncLogicOpState() {
     }
     flags[Dirty::LogicOp] = false;
 
-    const auto& regs = maxwell3d->regs;
+    auto& regs = maxwell3d->regs;
 
-    bool has_float = false;
+    if (device.IsAmd()) {
+        struct In {
+            const Tegra::Engines::Maxwell3D::Regs::VertexAttribute::Type d;
+            In(Tegra::Engines::Maxwell3D::Regs::VertexAttribute::Type n) : d(n) {}
+            bool operator()(Tegra::Engines::Maxwell3D::Regs::VertexAttribute n) const {
+                return n.type == d;
+            }
+        };
 
-    if (std::any_of(regs.vertex_attrib_format.begin(), regs.vertex_attrib_format.end(),
-                    [&](Tegra::Engines::Maxwell3D::Regs::VertexAttribute attribute) {
-                        return IsAnyFloat(attribute);
-                    }))
-        has_float = true;
+        bool has_float =
+            std::any_of(regs.vertex_attrib_format.begin(), regs.vertex_attrib_format.end(),
+                        In(Tegra::Engines::Maxwell3D::Regs::VertexAttribute::Type::Float));
+        regs.logic_op.enable = static_cast<u32>(!has_float);
+    }
 
-    if (regs.logic_op.enable && !has_float) {
+    if (regs.logic_op.enable) {
         glEnable(GL_COLOR_LOGIC_OP);
         glLogicOp(MaxwellToGL::LogicOp(regs.logic_op.op));
     } else {
