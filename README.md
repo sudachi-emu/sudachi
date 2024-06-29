@@ -3,8 +3,6 @@ Sudachi is a Nintendo Switch emulator for Android, Linux and Windows, written in
 
 # Building
 - **[Building for Android](documentation/building/ANDROID.md)**
-- TODO: ~~**[Building for Linux](https://official-antique.gitbook.io/sudachi/building/linux)**~~
-- TODO: ~~**[Building for Windows](https://official-antique.gitbook.io/sudachi/building/window)**~~
 
 # Compatibility
 > [!NOTE]

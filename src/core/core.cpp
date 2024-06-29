@@ -64,10 +64,12 @@
 #include "video_core/renderer_base.h"
 #include "video_core/video_core.h"
 
+#if MICROPROFILE == 1
 MICROPROFILE_DEFINE(ARM_CPU0, "ARM", "CPU 0", MP_RGB(255, 64, 64));
 MICROPROFILE_DEFINE(ARM_CPU1, "ARM", "CPU 1", MP_RGB(255, 64, 64));
 MICROPROFILE_DEFINE(ARM_CPU2, "ARM", "CPU 2", MP_RGB(255, 64, 64));
 MICROPROFILE_DEFINE(ARM_CPU3, "ARM", "CPU 3", MP_RGB(255, 64, 64));
+#endif
 
 namespace Core {
 
@@ -290,10 +292,12 @@ struct System::Impl {
         exit_locked = false;
         exit_requested = false;
 
+#if MICROPROFILE_ENABLED == 1
         microprofile_cpu[0] = MICROPROFILE_TOKEN(ARM_CPU0);
         microprofile_cpu[1] = MICROPROFILE_TOKEN(ARM_CPU1);
         microprofile_cpu[2] = MICROPROFILE_TOKEN(ARM_CPU2);
         microprofile_cpu[3] = MICROPROFILE_TOKEN(ARM_CPU3);
+#endif
 
         if (Settings::values.enable_renderdoc_hotkey) {
             renderdoc_api = std::make_unique<Tools::RenderdocAPI>();
@@ -946,13 +950,17 @@ void System::RegisterHostThread() {
 }
 
 void System::EnterCPUProfile() {
+#if MICROPROFILE_ENABLED == 1
     std::size_t core = impl->kernel.GetCurrentHostThreadID();
     impl->dynarmic_ticks[core] = MicroProfileEnter(impl->microprofile_cpu[core]);
+#endif
 }
 
 void System::ExitCPUProfile() {
+#if MICROPROFILE_ENABLED == 1
     std::size_t core = impl->kernel.GetCurrentHostThreadID();
     MicroProfileLeave(impl->microprofile_cpu[core], impl->dynarmic_ticks[core]);
+#endif
 }
 
 bool System::IsMulticore() const {

@@ -18,6 +18,7 @@ set(SHADER_FILES
     blit_color_float.frag
     block_linear_unswizzle_2d.comp
     block_linear_unswizzle_3d.comp
+    convert_abgr8_srgb_to_d24s8.frag
     convert_abgr8_to_d24s8.frag
     convert_abgr8_to_d32f.frag
     convert_d32f_to_abgr8.frag

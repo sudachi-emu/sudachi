@@ -46,7 +46,9 @@
 #include "core/hle/service/sm/sm.h"
 #include "core/memory.h"
 
+#if MICROPROFILE_ENABLED == 1
 MICROPROFILE_DEFINE(Kernel_SVC, "Kernel", "SVC", MP_RGB(70, 200, 70));
+#endif
 
 namespace Kernel {
 
@@ -1279,11 +1281,15 @@ void KernelCore::ExceptionalExitApplication() {
 }
 
 void KernelCore::EnterSVCProfile() {
+#if MICROPROFILE_ENABLED == 1
     impl->svc_ticks[CurrentPhysicalCoreIndex()] = MicroProfileEnter(MICROPROFILE_TOKEN(Kernel_SVC));
+#endif
 }
 
 void KernelCore::ExitSVCProfile() {
+#if MICROPROFILE_ENABLED == 1
     MicroProfileLeave(MICROPROFILE_TOKEN(Kernel_SVC), impl->svc_ticks[CurrentPhysicalCoreIndex()]);
+#endif
 }
 
 Init::KSlabResourceCounts& KernelCore::SlabResourceCounts() {

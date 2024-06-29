@@ -7,6 +7,7 @@
 
 #include "common/settings.h"
 #include "video_core/host_shaders/blit_color_float_frag_spv.h"
+#include "video_core/host_shaders/convert_abgr8_srgb_to_d24s8_frag_spv.h"
 #include "video_core/host_shaders/convert_abgr8_to_d24s8_frag_spv.h"
 #include "video_core/host_shaders/convert_abgr8_to_d32f_frag_spv.h"
 #include "video_core/host_shaders/convert_d24s8_to_abgr8_frag_spv.h"
@@ -434,6 +435,7 @@ BlitImageHelper::BlitImageHelper(const Device& device_, Scheduler& scheduler_,
       clear_stencil_frag(BuildShader(device, VULKAN_DEPTHSTENCIL_CLEAR_FRAG_SPV)),
       convert_depth_to_float_frag(BuildShader(device, CONVERT_DEPTH_TO_FLOAT_FRAG_SPV)),
       convert_float_to_depth_frag(BuildShader(device, CONVERT_FLOAT_TO_DEPTH_FRAG_SPV)),
+      convert_abgr8_srgb_to_d24s8_frag(BuildShader(device, CONVERT_ABGR8_SRGB_TO_D24S8_FRAG_SPV)),
       convert_abgr8_to_d24s8_frag(BuildShader(device, CONVERT_ABGR8_TO_D24S8_FRAG_SPV)),
       convert_abgr8_to_d32f_frag(BuildShader(device, CONVERT_ABGR8_TO_D32F_FRAG_SPV)),
       convert_d32f_to_abgr8_frag(BuildShader(device, CONVERT_D32F_TO_ABGR8_FRAG_SPV)),
@@ -552,6 +554,13 @@ void BlitImageHelper::ConvertR16ToD16(const Framebuffer* dst_framebuffer,
                                       const ImageView& src_image_view) {
     ConvertColorToDepthPipeline(convert_r16_to_d16_pipeline, dst_framebuffer->RenderPass());
     Convert(*convert_r16_to_d16_pipeline, dst_framebuffer, src_image_view);
+}
+
+void BlitImageHelper::ConvertABGR8SRGBToD24S8(const Framebuffer* dst_framebuffer,
+                                              const ImageView& src_image_view) {
+    ConvertPipelineDepthTargetEx(convert_abgr8_srgb_to_d24s8_pipeline,
+                                 dst_framebuffer->RenderPass(), convert_abgr8_srgb_to_d24s8_frag);
+    Convert(*convert_abgr8_srgb_to_d24s8_pipeline, dst_framebuffer, src_image_view);
 }
 
 void BlitImageHelper::ConvertABGR8ToD24S8(const Framebuffer* dst_framebuffer,

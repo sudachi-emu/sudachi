@@ -4,6 +4,7 @@
 #include "core/hle/service/am/frontend/applets.h"
 #include "core/hle/service/am/service/library_applet_accessor.h"
 #include "core/hle/service/am/service/process_winding_controller.h"
+#include "core/hle/service/am/service/storage.h"
 #include "core/hle/service/cmif_serialization.h"
 
 namespace Service::AM {
@@ -15,11 +16,11 @@ IProcessWindingController::IProcessWindingController(Core::System& system_,
     static const FunctionInfo functions[] = {
         {0, D<&IProcessWindingController::GetLaunchReason>, "GetLaunchReason"},
         {11, D<&IProcessWindingController::OpenCallingLibraryApplet>, "OpenCallingLibraryApplet"},
-        {21, nullptr, "PushContext"},
+        {21, D<&IProcessWindingController::PushContext>, "PushContext"},
         {22, nullptr, "PopContext"},
         {23, nullptr, "CancelWindingReservation"},
-        {30, nullptr, "WindAndDoReserved"},
-        {40, nullptr, "ReserveToStartAndWaitAndUnwindThis"},
+        {30, D<&IProcessWindingController::WindAndDoReserved>, "WindAndDoReserved"},
+        {40, D<&IProcessWindingController::ReserveToStartAndWaitAndUnwindThis>, "ReserveToStartAndWaitAndUnwindThis"},
         {41, nullptr, "ReserveToStartAndWait"},
     };
     // clang-format on
@@ -48,6 +49,22 @@ Result IProcessWindingController::OpenCallingLibraryApplet(
 
     *out_calling_library_applet = std::make_shared<ILibraryAppletAccessor>(
         system, m_applet->caller_applet_broker, caller_applet);
+    R_SUCCEED();
+}
+
+Result IProcessWindingController::PushContext(SharedPointer<IStorage> storage) {
+    LOG_INFO(Service_AM, "called");
+    R_SUCCEED();
+}
+
+Result IProcessWindingController::ReserveToStartAndWaitAndUnwindThis(
+    SharedPointer<ILibraryAppletAccessor> library_applet) {
+    LOG_INFO(Service_AM, "called");
+    R_SUCCEED();
+}
+
+Result IProcessWindingController::WindAndDoReserved() {
+    LOG_INFO(Service_AM, "called");
     R_SUCCEED();
 }
 

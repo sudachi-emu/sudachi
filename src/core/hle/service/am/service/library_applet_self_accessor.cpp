@@ -63,7 +63,7 @@ ILibraryAppletSelfAccessor::ILibraryAppletSelfAccessor(Core::System& system_,
         {19, D<&ILibraryAppletSelfAccessor::GetDesirableKeyboardLayout>, "GetDesirableKeyboardLayout"},
         {20, nullptr, "PopExtraStorage"},
         {25, nullptr, "GetPopExtraStorageEvent"},
-        {30, nullptr, "UnpopInData"},
+        {30, D<&ILibraryAppletSelfAccessor::UnpopInData>, "UnpopInData"},
         {31, nullptr, "UnpopExtraStorage"},
         {40, nullptr, "GetIndirectLayerProducerHandle"},
         {50, D<&ILibraryAppletSelfAccessor::ReportVisibleError>, "ReportVisibleError"},
@@ -207,6 +207,11 @@ Result ILibraryAppletSelfAccessor::GetCallerAppletIdentityInfoStack(
 Result ILibraryAppletSelfAccessor::GetDesirableKeyboardLayout(Out<u32> out_desirable_layout) {
     LOG_WARNING(Service_AM, "(STUBBED) called");
     *out_desirable_layout = 0;
+    R_SUCCEED();
+}
+
+Result ILibraryAppletSelfAccessor::UnpopInData(SharedPointer<IStorage> storage) {
+    LOG_WARNING(Service_AM, "(STUBBED) called");
     R_SUCCEED();
 }
 

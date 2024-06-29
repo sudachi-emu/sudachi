@@ -63,7 +63,7 @@ if (ENABLE_LIBUSB AND NOT TARGET libusb::usb)
 endif()
 
 # SDL2
-if (SUDACHI_USE_EXTERNAL_SDL2)
+if (USE_SDL2_FROM_EXTERNALS)
     if (NOT WIN32)
         # Sudachi itself needs: Atomic Audio Events Joystick Haptic Sensor Threads Timers
         # Since 2.0.18 Atomic+Threads required for HIDAPI/libusb (see https://github.com/libsdl-org/SDL/issues/5095)

@@ -67,7 +67,7 @@ ILibraryAppletSelfAccessor::ILibraryAppletSelfAccessor(Core::System& system_,
         {19, &ILibraryAppletSelfAccessor::GetDesirableKeyboardLayout, "GetDesirableKeyboardLayout"},
         {20, nullptr, "PopExtraStorage"},
         {25, nullptr, "GetPopExtraStorageEvent"},
-        {30, nullptr, "UnpopInData"},
+        {30, &ILibraryAppletSelfAccessor::UnpopInData, "UnpopInData"},
         {31, nullptr, "UnpopExtraStorage"},
         {40, nullptr, "GetIndirectLayerProducerHandle"},
         {50, nullptr, "ReportVisibleError"},
@@ -224,6 +224,13 @@ void ILibraryAppletSelfAccessor::GetDesirableKeyboardLayout(HLERequestContext& c
     IPC::ResponseBuilder rb{ctx, 3};
     rb.Push(ResultSuccess);
     rb.Push<u32>(0);
+}
+
+void ILibraryAppletSelfAccessor::UnpopInData(HLERequestContext& ctx) {
+    LOG_WARNING(Service_AM, "(STUBBED) called");
+
+    IPC::ResponseBuilder rb{ctx, 2};
+    rb.Push(ResultSuccess);
 }
 
 void ILibraryAppletSelfAccessor::GetMainAppletApplicationDesiredLanguage(HLERequestContext& ctx) {

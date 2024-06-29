@@ -61,31 +61,33 @@ if (MSVC)
         /external:W0            # Sets the default warning level to 0 for external headers, effectively disabling warnings for them.
 
         # Warnings
-        /W4
-        /WX
+        # /W4
+        # /WX
 
-        /we4062 # Enumerator 'identifier' in a switch of enum 'enumeration' is not handled
-        /we4189 # 'identifier': local variable is initialized but not referenced
-        /we4265 # 'class': class has virtual functions, but destructor is not virtual
-        /we4388 # 'expression': signed/unsigned mismatch
-        /we4389 # 'operator': signed/unsigned mismatch
-        /we4456 # Declaration of 'identifier' hides previous local declaration
-        /we4457 # Declaration of 'identifier' hides function parameter
-        /we4458 # Declaration of 'identifier' hides class member
-        /we4459 # Declaration of 'identifier' hides global declaration
-        /we4505 # 'function': unreferenced local function has been removed
-        /we4547 # 'operator': operator before comma has no effect; expected operator with side-effect
-        /we4549 # 'operator1': operator before comma has no effect; did you intend 'operator2'?
-        /we4555 # Expression has no effect; expected expression with side-effect
-        /we4826 # Conversion from 'type1' to 'type2' is sign-extended. This may cause unexpected runtime behavior.
-        /we5038 # data member 'member1' will be initialized after data member 'member2'
-        /we5233 # explicit lambda capture 'identifier' is not used
-        /we5245 # 'function': unreferenced function with internal linkage has been removed
+        # /we4062 # Enumerator 'identifier' in a switch of enum 'enumeration' is not handled
+        # /we4189 # 'identifier': local variable is initialized but not referenced
+        # /we4265 # 'class': class has virtual functions, but destructor is not virtual
+        # /we4388 # 'expression': signed/unsigned mismatch
+        # /we4389 # 'operator': signed/unsigned mismatch
+        # /we4456 # Declaration of 'identifier' hides previous local declaration
+        # /we4457 # Declaration of 'identifier' hides function parameter
+        # /we4458 # Declaration of 'identifier' hides class member
+        # /we4459 # Declaration of 'identifier' hides global declaration
+        # /we4505 # 'function': unreferenced local function has been removed
+        # /we4547 # 'operator': operator before comma has no effect; expected operator with side-effect
+        # /we4549 # 'operator1': operator before comma has no effect; did you intend 'operator2'?
+        # /we4555 # Expression has no effect; expected expression with side-effect
+        # /we4826 # Conversion from 'type1' to 'type2' is sign-extended. This may cause unexpected runtime behavior.
+        # /we5038 # data member 'member1' will be initialized after data member 'member2'
+        # /we5233 # explicit lambda capture 'identifier' is not used
+        # /we5245 # 'function': unreferenced function with internal linkage has been removed
 
-        /wd4100 # 'identifier': unreferenced formal parameter
-        /wd4324 # 'struct_name': structure was padded due to __declspec(align())
-        /wd4201 # nonstandard extension used : nameless struct/union
-        /wd4702 # unreachable code (when used with LTO)
+        # /wd4189
+        # /wd4101
+        # /wd4100 # 'identifier': unreferenced formal parameter
+        # /wd4324 # 'struct_name': structure was padded due to __declspec(align())
+        # /wd4201 # nonstandard extension used : nameless struct/union
+        # /wd4702 # unreachable code (when used with LTO)
     )
 
     if (USE_CCACHE OR SUDACHI_USE_PRECOMPILED_HEADERS)

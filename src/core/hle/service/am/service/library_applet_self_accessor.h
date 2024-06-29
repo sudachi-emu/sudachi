@@ -66,6 +66,7 @@ private:
         Out<s32> out_count,
         OutArray<AppletIdentityInfo, BufferAttr_HipcMapAlias> out_identity_info);
     Result GetDesirableKeyboardLayout(Out<u32> out_desirable_layout);
+    Result UnpopInData(SharedPointer<IStorage> storage);
     Result ReportVisibleError(ErrorCode error_code);
     Result ReportVisibleErrorWithErrorContext(
         ErrorCode error_code, InLargeData<ErrorContext, BufferAttr_HipcMapAlias> error_context);

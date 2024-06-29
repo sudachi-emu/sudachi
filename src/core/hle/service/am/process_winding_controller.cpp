@@ -4,6 +4,7 @@
 #include "core/hle/service/am/frontend/applets.h"
 #include "core/hle/service/am/library_applet_accessor.h"
 #include "core/hle/service/am/process_winding_controller.h"
+#include "core/hle/service/am/service/storage.h"
 #include "core/hle/service/ipc_helpers.h"
 
 namespace Service::AM {
@@ -15,11 +16,11 @@ IProcessWindingController::IProcessWindingController(Core::System& system_,
     static const FunctionInfo functions[] = {
         {0, &IProcessWindingController::GetLaunchReason, "GetLaunchReason"},
         {11, &IProcessWindingController::OpenCallingLibraryApplet, "OpenCallingLibraryApplet"},
-        {21, nullptr, "PushContext"},
+        {21, &IProcessWindingController::PushContext, "PushContext"},
         {22, nullptr, "PopContext"},
         {23, nullptr, "CancelWindingReservation"},
-        {30, nullptr, "WindAndDoReserved"},
-        {40, nullptr, "ReserveToStartAndWaitAndUnwindThis"},
+        {30, &IProcessWindingController::WindAndDoReserved, "WindAndDoReserved"},
+        {40, &IProcessWindingController::ReserveToStartAndWaitAndUnwindThis, "ReserveToStartAndWaitAndUnwindThis"},
         {41, nullptr, "ReserveToStartAndWait"},
     };
     // clang-format on
@@ -51,6 +52,27 @@ void IProcessWindingController::OpenCallingLibraryApplet(HLERequestContext& ctx)
     rb.Push(ResultSuccess);
     rb.PushIpcInterface<ILibraryAppletAccessor>(system, applet->caller_applet_broker,
                                                 caller_applet);
+}
+
+void IProcessWindingController::PushContext(HLERequestContext& ctx) {
+    LOG_WARNING(Service_AM, "(STUBBED) called");
+
+    IPC::ResponseBuilder rb{ctx, 2};
+    rb.Push(ResultSuccess);
+}
+
+void IProcessWindingController::ReserveToStartAndWaitAndUnwindThis(HLERequestContext& ctx) {
+    LOG_WARNING(Service_AM, "(STUBBED) called");
+
+    IPC::ResponseBuilder rb{ctx, 2};
+    rb.Push(ResultSuccess);
+}
+
+void IProcessWindingController::WindAndDoReserved(HLERequestContext& ctx) {
+    LOG_WARNING(Service_AM, "(STUBBED) called");
+
+    IPC::ResponseBuilder rb{ctx, 2};
+    rb.Push(ResultSuccess);
 }
 
 } // namespace Service::AM

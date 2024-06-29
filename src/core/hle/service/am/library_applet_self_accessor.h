@@ -31,6 +31,7 @@ private:
     void ExitProcessAndReturn(HLERequestContext& ctx);
     void GetCallerAppletIdentityInfo(HLERequestContext& ctx);
     void GetDesirableKeyboardLayout(HLERequestContext& ctx);
+    void UnpopInData(HLERequestContext& ctx);
     void GetMainAppletApplicationDesiredLanguage(HLERequestContext& ctx);
     void GetCurrentApplicationId(HLERequestContext& ctx);
     void GetMainAppletAvailableUsers(HLERequestContext& ctx);

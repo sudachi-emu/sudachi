@@ -1,7 +1,7 @@
 {
     "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
     "name": "sudachi",
-    "builtin-baseline": "a42af01b72c28a8e1d7b48107b33e4f286a55ef6",
+    "builtin-baseline": "1cdb5e0b24c303b41fcac0dce00baf21881f6da2",
     "version": "1.0",
     "dependencies": [
         "boost-algorithm",
