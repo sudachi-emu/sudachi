@@ -20,7 +20,11 @@ typedef void* HANDLE;
 #endif
 
 #if MICROPROFILE_ENABLED == 0
-#define MicroProfileOnThreadExit __noop
+#ifdef _WIN32
+#define MicroProfileOnThreadExit() __noop
+#else
+#define MicroProfileOnThreadExit() 0
+#endif
 #endif
 #include <microprofile.h>
 

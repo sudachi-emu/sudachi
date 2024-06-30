@@ -101,6 +101,14 @@ Status BufferQueueConsumer::AcquireBuffer(BufferItem* out_buffer,
         // slot to the producer, it will wait for the fence to pass. We should fix this
         // by properly waiting for the fence in the BufferItemConsumer.
         // slots[slot].fence = Fence::NoFence();
+
+        const auto target_frame_number = slots[slot].frame_number;
+        for (int i = 0; i < core->history.size(); i++) {
+            if (core->history[i].frame_number = target_frame_number) {
+                core->history[i].state = BufferState::Acquired;
+                break;
+            }
+        }
     }
 
     // If the buffer has previously been acquired by the consumer, set graphic_buffer to nullptr to
@@ -254,6 +262,15 @@ Status BufferQueueConsumer::GetReleasedBuffers(u64* out_slot_mask) {
     *out_slot_mask = mask;
     return Status::NoError;
 }
+
+/* SetPresentTime
+for (int i = 0; i < core->history.size(); i++) {
+    if (core->history[i].frame_number = target_frame_number) {
+        core->history[i].state == BufferState::Acquired;
+        break;
+    }
+}
+*/
 
 void BufferQueueConsumer::Transact(u32 code, std::span<const u8> parcel_data,
                                    std::span<u8> parcel_reply, u32 flags) {

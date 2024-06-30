@@ -10,7 +10,9 @@
 
 namespace Service::android {
 
-BufferQueueCore::BufferQueueCore() = default;
+BufferQueueCore::BufferQueueCore() {
+    history.resize(8);
+};
 
 BufferQueueCore::~BufferQueueCore() = default;
 

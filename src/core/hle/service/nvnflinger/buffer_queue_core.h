@@ -72,6 +72,15 @@ private:
     u32 transform_hint{};
     bool is_allocating{};
     mutable std::condition_variable_any is_allocating_condition;
+
+    class BufferInfo final {
+    public:
+        u64 frame_number{};
+        s64 queue_time{}, presentation_time{};
+        BufferState state{BufferState::Free};
+    };
+
+    std::vector<BufferInfo> history;
 };
 
 } // namespace Service::android

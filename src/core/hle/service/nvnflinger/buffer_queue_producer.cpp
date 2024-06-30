@@ -512,6 +512,8 @@ Status BufferQueueProducer::QueueBuffer(s32 slot, const QueueBufferInput& input,
         slots[slot].buffer_state = BufferState::Queued;
         ++core->frame_counter;
         slots[slot].frame_number = core->frame_counter;
+        slots[slot].queue_time = 0;        // this is not the true value
+        slots[slot].presentation_time = 0; // doesn't need to be set afaik but do it anyway
 
         item.acquire_called = slots[slot].acquire_called;
         item.graphic_buffer = slots[slot].graphic_buffer;
@@ -527,6 +529,13 @@ Status BufferQueueProducer::QueueBuffer(s32 slot, const QueueBufferInput& input,
         item.fence = fence;
         item.is_droppable = core->dequeue_buffer_cannot_block || async;
         item.swap_interval = swap_interval;
+
+        // TODO: .queue_time should be changed to the correct value
+        position = (position + 1) % 8;
+        LOG_WARNING(Service_Nvnflinger, "position={}", position);
+        core->history[position] = {.frame_number = core->frame_counter,
+                                   .queue_time = slots[slot].queue_time,
+                                   .state = BufferState::Queued};
 
         sticky_transform = sticky_transform_;
 
@@ -922,9 +931,28 @@ void BufferQueueProducer::Transact(u32 code, std::span<const u8> parcel_data,
         status = SetBufferCount(buffer_count);
         break;
     }
-    case TransactionId::GetBufferHistory:
-        LOG_WARNING(Service_Nvnflinger, "(STUBBED) called, transaction=GetBufferHistory");
+    case TransactionId::GetBufferHistory: {
+        LOG_WARNING(Service_Nvnflinger, "(STUBBED) called");
+
+        std::scoped_lock lock{core->mutex};
+
+        auto buffer_history_count = std::min(parcel_in.Read<s32>(), (s32)core->history.size());
+
+        BufferQueueCore::BufferInfo* info = new BufferQueueCore::BufferInfo[buffer_history_count];
+        auto pos = position;
+        for (int i = 0; i < buffer_history_count; i++) {
+            info[i] = core->history[(pos - i) % core->history.size()];
+            LOG_WARNING(Service_Nvnflinger, "frame_number={}, state={}",
+                        core->history[(pos - i) % core->history.size()].frame_number,
+                        (u32)core->history[(pos - i) % core->history.size()].state);
+            pos--;
+        }
+
+        parcel_out.WriteFlattenedObject<BufferQueueCore::BufferInfo>(info);
+        status = Status::NoError;
+
         break;
+    }
     default:
         ASSERT_MSG(false, "Unimplemented TransactionId {}", code);
         break;

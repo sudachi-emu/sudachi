@@ -86,6 +86,8 @@ private:
     s32 current_callback_ticket{};
     std::condition_variable_any callback_condition;
 
+    u64 position;
+
     Service::Nvidia::NvCore::NvMap& nvmap;
 };
 
