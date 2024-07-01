@@ -26,6 +26,8 @@ public:
 
     void CloseEvent(Kernel::KEvent* event);
 
+    Core::System& m_system;
+
 private:
     Kernel::KernelCore& kernel;
     Kernel::KProcess* process{};

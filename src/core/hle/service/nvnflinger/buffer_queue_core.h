@@ -18,6 +18,7 @@
 #include "core/hle/service/nvnflinger/pixel_format.h"
 #include "core/hle/service/nvnflinger/status.h"
 #include "core/hle/service/nvnflinger/window.h"
+#include "core/hle/service/time/clock_types.h"
 
 namespace Service::android {
 
@@ -76,7 +77,7 @@ private:
     class BufferInfo final {
     public:
         u64 frame_number{};
-        s64 queue_time{}, presentation_time{};
+        Time::Clock::TimeSpanType queue_time, presentation_time;
         BufferState state{BufferState::Free};
     };
 

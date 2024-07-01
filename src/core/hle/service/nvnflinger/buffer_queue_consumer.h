@@ -14,6 +14,14 @@
 #include "core/hle/service/nvnflinger/buffer_queue_defs.h"
 #include "core/hle/service/nvnflinger/status.h"
 
+namespace Service {
+namespace Time {
+namespace Clock {
+struct TimeSpanType;
+} // namespace Clock
+} // namespace Time
+} // namespace Service
+
 namespace Service::android {
 
 class BufferItem;
@@ -30,6 +38,7 @@ public:
     Status Connect(std::shared_ptr<IConsumerListener> consumer_listener, bool controlled_by_app);
     Status Disconnect();
     Status GetReleasedBuffers(u64* out_slot_mask);
+    Status SetPresentTime(s32 slot, u64 frame_number, Time::Clock::TimeSpanType presentation_time);
 
     void Transact(u32 code, std::span<const u8> parcel_data, std::span<u8> parcel_reply,
                   u32 flags) override;

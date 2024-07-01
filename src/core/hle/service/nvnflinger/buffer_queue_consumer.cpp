@@ -11,6 +11,7 @@
 #include "core/hle/service/nvnflinger/buffer_queue_core.h"
 #include "core/hle/service/nvnflinger/parcel.h"
 #include "core/hle/service/nvnflinger/producer_listener.h"
+#include "core/hle/service/time/clock_types.h"
 
 namespace Service::android {
 
@@ -104,7 +105,7 @@ Status BufferQueueConsumer::AcquireBuffer(BufferItem* out_buffer,
 
         const auto target_frame_number = slots[slot].frame_number;
         for (int i = 0; i < core->history.size(); i++) {
-            if (core->history[i].frame_number = target_frame_number) {
+            if (core->history[i].frame_number == target_frame_number) {
                 core->history[i].state = BufferState::Acquired;
                 break;
             }
@@ -263,14 +264,28 @@ Status BufferQueueConsumer::GetReleasedBuffers(u64* out_slot_mask) {
     return Status::NoError;
 }
 
-/* SetPresentTime
-for (int i = 0; i < core->history.size(); i++) {
-    if (core->history[i].frame_number = target_frame_number) {
-        core->history[i].state == BufferState::Acquired;
-        break;
+Status BufferQueueConsumer::SetPresentTime(s32 slot, u64 frame_number,
+                                           Time::Clock::TimeSpanType presentation_time) {
+    if (slot < 0 || slot >= slots.size())
+        return Status::BadValue;
+
+    std::scoped_lock lock{core->mutex};
+
+    if (slots[slot].frame_number != frame_number)
+        return Status::StaleBufferSlot;
+
+    if (slots[slot].presentation_time.nanoseconds == 0)
+        slots[slot].presentation_time = presentation_time;
+
+    for (int i = 0; i < core->history.size(); i++) {
+        if (core->history[i].frame_number == frame_number) {
+            core->history[i].presentation_time = presentation_time;
+            break;
+        }
     }
+
+    return Status::NoError;
 }
-*/
 
 void BufferQueueConsumer::Transact(u32 code, std::span<const u8> parcel_data,
                                    std::span<u8> parcel_reply, u32 flags) {
@@ -326,6 +341,15 @@ void BufferQueueConsumer::Transact(u32 code, std::span<const u8> parcel_data,
         status = GetReleasedBuffers(&slot_mask);
 
         parcel_out.Write(slot_mask);
+        break;
+    }
+    case TransactionId::SetTransformHint: {
+        std::scoped_lock lock{core->mutex};
+
+        const u32 transform_hint = parcel_in.Read<u32>();
+        LOG_WARNING(Service_Nvnflinger, "Transact::SetTransformHint={}", transform_hint);
+        status = Status::NoError;
+        parcel_out.Write<u32>(transform_hint);
         break;
     }
     default:

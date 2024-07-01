@@ -10,6 +10,7 @@
 
 #include "common/common_types.h"
 #include "core/hle/service/nvnflinger/ui/fence.h"
+#include "core/hle/service/time/clock_types.h"
 
 namespace Service::android {
 
@@ -35,7 +36,7 @@ struct BufferSlot final {
     bool attached_by_consumer{};
     bool is_preallocated{};
 
-    s64 queue_time{}, presentation_time{};
+    Time::Clock::TimeSpanType queue_time, presentation_time;
 };
 
 } // namespace Service::android

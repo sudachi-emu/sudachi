@@ -14,7 +14,7 @@
 namespace Service::KernelHelpers {
 
 ServiceContext::ServiceContext(Core::System& system_, std::string name_)
-    : kernel(system_.Kernel()) {
+    : m_system(system_), kernel(system_.Kernel()) {
     if (process = Kernel::GetCurrentProcessPointer(kernel); process != nullptr) {
         return;
     }

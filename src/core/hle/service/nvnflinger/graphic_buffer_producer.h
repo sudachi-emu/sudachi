@@ -51,26 +51,31 @@ static_assert(sizeof(QueueBufferInput) == 84, "QueueBufferInput has wrong size")
 struct QueueBufferOutput final {
     QueueBufferOutput();
 
-    void Deflate(u32* width_, u32* height_, u32* transform_hint_, u32* num_pending_buffers_) const {
+    void Deflate(u32* width_, u32* height_, u32* transform_hint_, u32* num_pending_buffers_,
+                 u64* frame_number_) const {
         *width_ = width;
         *height_ = height;
         *transform_hint_ = transform_hint;
         *num_pending_buffers_ = num_pending_buffers;
+        *frame_number_ = frame_number;
     }
 
-    void Inflate(u32 width_, u32 height_, u32 transform_hint_, u32 num_pending_buffers_) {
+    void Inflate(u32 width_, u32 height_, u32 transform_hint_, u32 num_pending_buffers_,
+                 u64 frame_number_) {
         width = width_;
         height = height_;
         transform_hint = transform_hint_;
         num_pending_buffers = num_pending_buffers_;
+        frame_number = frame_number_;
     }
 
-private:
+public:
     u32 width{};
     u32 height{};
     u32 transform_hint{};
     u32 num_pending_buffers{};
+    u64 frame_number{};
 };
-static_assert(sizeof(QueueBufferOutput) == 16, "QueueBufferOutput has wrong size");
+static_assert(sizeof(QueueBufferOutput) == 24, "QueueBufferOutput has wrong size");
 
 } // namespace Service::android

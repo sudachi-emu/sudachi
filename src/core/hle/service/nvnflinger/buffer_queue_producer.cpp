@@ -6,6 +6,7 @@
 
 #include "common/assert.h"
 #include "common/logging/log.h"
+#include "core/core_timing.h"
 #include "core/hle/kernel/k_event.h"
 #include "core/hle/kernel/k_readable_event.h"
 #include "core/hle/kernel/kernel.h"
@@ -16,6 +17,7 @@
 #include "core/hle/service/nvnflinger/parcel.h"
 #include "core/hle/service/nvnflinger/ui/graphic_buffer.h"
 #include "core/hle/service/nvnflinger/window.h"
+#include "core/hle/service/time/clock_types.h"
 
 namespace Service::android {
 
@@ -278,6 +280,9 @@ Status BufferQueueProducer::DequeueBuffer(s32* out_slot, Fence* out_fence, bool 
             return_flags |= Status::BufferNeedsReallocation;
         }
 
+        slots[found].queue_time = Time::Clock::TimeSpanType::FromSeconds(0);
+        slots[found].presentation_time = Time::Clock::TimeSpanType::FromSeconds(0);
+
         *out_fence = slots[found].fence;
         slots[found].fence = Fence::NoFence();
     }
@@ -508,12 +513,17 @@ Status BufferQueueProducer::QueueBuffer(s32 slot, const QueueBufferInput& input,
             return Status::BadValue;
         }
 
+        auto& ctx = service_context;
+        auto& system = ctx.m_system;
+
         slots[slot].fence = fence;
         slots[slot].buffer_state = BufferState::Queued;
         ++core->frame_counter;
         slots[slot].frame_number = core->frame_counter;
-        slots[slot].queue_time = 0;        // this is not the true value
-        slots[slot].presentation_time = 0; // doesn't need to be set afaik but do it anyway
+        slots[slot].queue_time = Time::Clock::TimeSpanType::FromTicks<Core::Hardware::CNTFREQ>(
+            system.CoreTiming().GetClockTicks()); // this is not the true value
+        slots[slot].presentation_time = Time::Clock::TimeSpanType::FromSeconds(
+            0); // doesn't need to be set afaik but do it anyway
 
         item.acquire_called = slots[slot].acquire_called;
         item.graphic_buffer = slots[slot].graphic_buffer;
@@ -569,7 +579,12 @@ Status BufferQueueProducer::QueueBuffer(s32 slot, const QueueBufferInput& input,
         core->buffer_has_been_queued = true;
         core->SignalDequeueCondition();
         output->Inflate(core->default_width, core->default_height, core->transform_hint,
-                        static_cast<u32>(core->queue.size()));
+                        static_cast<u32>(core->queue.size()), core->frame_counter);
+
+        if ((sticky_transform & 8) != 0) {
+            output->transform_hint |= (u32)NativeWindowTransform::ReturnFrameNumber;
+            output->frame_number = slots[slot].frame_number;
+        }
 
         // Take a ticket for the callback functions
         callback_ticket = next_callback_ticket++;
@@ -670,7 +685,7 @@ Status BufferQueueProducer::Query(NativeWindow what, s32* out_value) {
         return Status::BadValue;
     }
 
-    LOG_DEBUG(Service_Nvnflinger, "what = {}, value = {}", what, value);
+    LOG_WARNING(Service_Nvnflinger, "what = {}, value = {}", what, value);
 
     *out_value = static_cast<s32>(value);
 
@@ -714,7 +729,7 @@ Status BufferQueueProducer::Connect(const std::shared_ptr<IProducerListener>& li
     case NativeWindowApi::Camera:
         core->connected_api = api;
         output->Inflate(core->default_width, core->default_height, core->transform_hint,
-                        static_cast<u32>(core->queue.size()));
+                        static_cast<u32>(core->queue.size()), core->frame_counter);
         core->connected_producer_listener = listener;
         break;
     default:
@@ -849,7 +864,12 @@ void BufferQueueProducer::Transact(u32 code, std::span<const u8> parcel_data,
 
         status = Connect(listener, api, producer_controlled_by_app, &output);
 
+        LOG_WARNING(Service_Nvnflinger, "Connect, output.frame_number={}, output.transform_hint={}",
+                    output.frame_number, output.transform_hint);
+
         parcel_out.Write(output);
+        if (output.transform_hint & (u32)NativeWindowTransform::ReturnFrameNumber)
+            parcel_out.Write<u64>(output.frame_number);
         break;
     }
     case TransactionId::SetPreallocatedBuffer: {
@@ -892,8 +912,13 @@ void BufferQueueProducer::Transact(u32 code, std::span<const u8> parcel_data,
         QueueBufferOutput output;
 
         status = QueueBuffer(slot, input, &output);
+        LOG_WARNING(Service_Nvnflinger,
+                    "QueueBuffer, output.frame_number={}, output.transform_hint={}",
+                    output.frame_number, output.transform_hint);
 
         parcel_out.Write(output);
+        if (output.transform_hint & (u32)NativeWindowTransform::ReturnFrameNumber)
+            parcel_out.Write<u64>(output.frame_number);
         break;
     }
     case TransactionId::Query: {
@@ -948,6 +973,7 @@ void BufferQueueProducer::Transact(u32 code, std::span<const u8> parcel_data,
             pos--;
         }
 
+        parcel_out.Write<s32>(buffer_history_count);
         parcel_out.WriteFlattenedObject<BufferQueueCore::BufferInfo>(info);
         status = Status::NoError;
 

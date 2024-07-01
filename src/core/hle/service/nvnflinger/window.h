@@ -48,6 +48,7 @@ enum class NativeWindowScalingMode : s32 {
 enum class NativeWindowTransform : u32 {
     None = 0x0,
     InverseDisplay = 0x08,
+    ReturnFrameNumber = 0x20
 };
 DECLARE_ENUM_FLAG_OPERATORS(NativeWindowTransform);
 
