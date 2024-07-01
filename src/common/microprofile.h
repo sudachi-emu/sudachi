@@ -5,7 +5,11 @@
 
 // Uncomment this to disable microprofile. This will get you cleaner profiles when using
 // external sampling profilers like "Very Sleepy", and will improve performance somewhat.
+#ifdef _DEBUG
+#define MICROPROFILE_ENABLED 1
+#else
 #define MICROPROFILE_ENABLED 0
+#endif
 
 // Customized Citra settings.
 // This file wraps the MicroProfile header so that these are consistent everywhere.
@@ -20,7 +24,11 @@ typedef void* HANDLE;
 #endif
 
 #if MICROPROFILE_ENABLED == 0
-#define MicroProfileOnThreadExit __noop
+#ifdef _WIN32
+#define MicroProfileOnThreadExit() __noop
+#else
+#define MicroProfileOnThreadExit() 0
+#endif
 #endif
 #include <microprofile.h>
 

@@ -30,7 +30,7 @@ public:
 
 private:
     void InitializeOld(HLERequestContext& ctx) {
-        LOG_WARNING(Service_MM, "(STUBBED) called.");
+        LOG_DEBUG(Service_MM, "(STUBBED) called.");
 
         IPC::RequestParser rp{ctx};
         module = rp.PopEnum<Module>();
@@ -42,7 +42,7 @@ private:
     }
 
     void FinalizeOld(HLERequestContext& ctx) {
-        LOG_WARNING(Service_MM, "(STUBBED) called.");
+        LOG_DEBUG(Service_MM, "(STUBBED) called.");
 
         IPC::RequestParser rp{ctx};
         module = rp.PopEnum<Module>();
@@ -52,7 +52,7 @@ private:
     }
 
     void SetAndWaitOld(HLERequestContext& ctx) {
-        LOG_WARNING(Service_MM, "(STUBBED) called.");
+        LOG_DEBUG(Service_MM, "(STUBBED) called.");
 
         IPC::RequestParser rp{ctx};
         module = rp.PopEnum<Module>();
@@ -65,7 +65,7 @@ private:
     }
 
     void GetOld(HLERequestContext& ctx) {
-        LOG_WARNING(Service_MM, "(STUBBED) called.");
+        LOG_DEBUG(Service_MM, "(STUBBED) called.");
 
         IPC::RequestParser rp{ctx};
         module = rp.PopEnum<Module>();
@@ -76,7 +76,7 @@ private:
     }
 
     void Initialize(HLERequestContext& ctx) {
-        LOG_WARNING(Service_MM, "(STUBBED) called.");
+        LOG_DEBUG(Service_MM, "(STUBBED) called.");
 
         IPC::RequestParser rp{ctx};
         module = rp.PopEnum<Module>();
@@ -89,7 +89,7 @@ private:
     }
 
     void Finalize(HLERequestContext& ctx) {
-        LOG_WARNING(Service_MM, "(STUBBED) called.");
+        LOG_DEBUG(Service_MM, "(STUBBED) called.");
 
         IPC::RequestParser rp{ctx};
         request_id = rp.Pop<u32>();
@@ -99,7 +99,7 @@ private:
     }
 
     void SetAndWait(HLERequestContext& ctx) {
-        LOG_WARNING(Service_MM, "(STUBBED) called.");
+        LOG_DEBUG(Service_MM, "(STUBBED) called.");
 
         IPC::RequestParser rp{ctx};
         request_id = rp.Pop<u32>();
@@ -112,7 +112,7 @@ private:
     }
 
     void Get(HLERequestContext& ctx) {
-        LOG_WARNING(Service_MM, "(STUBBED) called.");
+        LOG_DEBUG(Service_MM, "(STUBBED) called.");
 
         IPC::RequestParser rp{ctx};
         request_id = rp.Pop<u32>();
